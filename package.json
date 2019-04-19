@@ -1,13 +1,41 @@
 {
   "name": "kekopolia",
   "version": "0.1.0",
+  "homepage": "https://cookiehunter22.github.io/the-bachelor-game",
   "private": true,
+  "devDependencies": {
+    "@material-ui/core": "^3.9.3",
+    "@material-ui/icons": "^3.0.2",
+    "@types/jest": "^24.0.11",
+    "@types/material-ui": "^0.21.6",
+    "@types/node": "^11.13.4",
+    "@types/react": "^16.8.13",
+    "@types/react-dom": "^16.8.4",
+    "@types/react-map-gl": "^4.1.1",
+    "@types/react-router-dom": "^4.3.2",
+    "@types/react-swipeable-views": "^0.13.0",
+    "@types/styled-components": "4.0.3",
+    "typescript": "^3.4.3"
+  },
   "dependencies": {
+    "gh-pages": "^2.0.1",
+    "apollo-boost": "^0.3.1",
+    "bootstrap": "^4.3.1",
+    "graphql": "^14.2.1",
     "react": "^16.8.6",
+    "react-apollo": "^2.5.4",
+    "react-apollo-hooks": "^0.4.5",
+    "react-confetti": "^2.7.3",
     "react-dom": "^16.8.6",
-    "react-scripts": "2.1.8"
+    "react-map-gl": "^4.1.2",
+    "react-router-dom": "^5.0.0",
+    "react-scripts": "2.1.8",
+    "react-swipeable-views": "^0.13.1",
+    "styled-components": "^4.2.0"
   },
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",

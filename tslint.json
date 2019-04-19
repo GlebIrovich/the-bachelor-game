@@ -1,0 +1,43 @@
+{
+  "defaultSeverity": "error",
+  // https://palantir.github.io/tslint/rules/
+  // https://github.com/palantir/tslint-react
+  "extends": ["tslint:latest", "tslint-react"],
+  "jsRules": {},
+  "rules": {
+    // Use single quotes, but enforce double quotes in JSX
+    "quotemark": [true, "single", "jsx-double"],
+    // Control ordering of imports
+    "ordered-imports": [
+      true,
+      {
+        "import-sources-order": "case-insensitive"
+      }
+    ],
+    // Allow importing submodules such as `import { Menu } from '@blueprintjs/core';`
+    "no-submodule-imports": false,
+    // Dependencies need to be in package.json or start with `src`
+    "no-implicit-dependencies": [true, ["dev", "src"]],
+    // Removes the need that each Interface be prefixed with 'I'
+    "interface-name": [true, "never-prefix"],
+    // Allow JSX Components to be multiline
+    "jsx-no-multiline-js": false,
+    // Disable max line length
+    "max-line-length": false,
+    // Allow `require` when importing. Used with assets
+    "no-var-requires": false,
+    // 1 space between curly brackets in JSX props
+    "jsx-curly-spacing": 1,
+    // Allow jsx boolean values without explicit value: Ex: <Route exact />
+    "jsx-boolean-value": false,
+    // tsc & trailing-comma clash with spread operator https://github.com/palantir/tslint/issues/3960
+    "trailing-comma": [
+      true,
+      {
+          "multiline": "always",
+          "singleline": "never",
+          "esSpecCompliant": true
+      }
+    ]
+  }
+}
