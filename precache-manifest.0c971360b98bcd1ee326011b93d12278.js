@@ -8,19 +8,19 @@ self.__precacheManifest = [
     "url": "/the-bachelor-game/static/js/runtime~main.eb66bfe3.js"
   },
   {
-    "revision": "c8da476d5ff2fce7a070",
-    "url": "/the-bachelor-game/static/js/main.4da53dc3.chunk.js"
+    "revision": "50c99824651dabef0337",
+    "url": "/the-bachelor-game/static/js/main.534842b6.chunk.js"
   },
   {
     "revision": "cc70745286a77643754d",
     "url": "/the-bachelor-game/static/js/2.9ea3ccc6.chunk.js"
   },
   {
-    "revision": "c8da476d5ff2fce7a070",
+    "revision": "50c99824651dabef0337",
     "url": "/the-bachelor-game/static/css/main.0f6d2f58.chunk.css"
   },
   {
-    "revision": "84b6e8c36b40a5d84a7e211f49568933",
+    "revision": "63481bf61762c64b1f15ad2858707f82",
     "url": "/the-bachelor-game/index.html"
   }
 ];
