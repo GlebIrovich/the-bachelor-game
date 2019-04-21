@@ -1,7 +1,6 @@
 import { Button, FormHelperText, TextField } from '@material-ui/core';
 import React, { ChangeEvent, FC, useState } from 'react';
-import { Mutation, Query, withApollo, WithApolloClient } from 'react-apollo';
-import { RouteComponentProps, withRouter } from 'react-router';
+import { Mutation, Query } from 'react-apollo';
 
 import Overlay from '.';
 import { hideOverlay } from '../../context/actions';
@@ -32,7 +31,7 @@ interface Data {
 
 class InsertUserMutation extends Mutation<Data, InsertNewUserMutationVariables>{}
 
-const SignUpOverlay: FC<WithApolloClient<{}> & RouteComponentProps> = ({client, history}) => {
+const SignUpOverlay = () => {
   const [inputValues, changeValue] = useState({
     [InputField.EMAIL]: '',
     [InputField.PASSWORD]: '',
@@ -43,18 +42,23 @@ const SignUpOverlay: FC<WithApolloClient<{}> & RouteComponentProps> = ({client, 
   const handleChange = (inputName: InputField) => (event: ChangeEvent<HTMLInputElement>) => {
     changeValue({ ...inputValues, [inputName]: event.currentTarget.value })
   }
+
+  const [inputError, setInputError] = useState(false);
+
+  const inputIsEmpty = (field: InputField) => inputValues[field] === '';
+
+  const inputIsValid = () => inputValues[InputField.EMAIL] && inputValues[InputField.USERNAME] && inputValues[InputField.PASSWORD];
   
   return (
     <Overlay>
       <OverlayWidget
         title="Регистрация"
-        onCancel={() => history.push('/')}
         actions={
           <UsersQuery query={GET_USER_BY_EMAIL} variables={{email: inputValues[InputField.EMAIL]}}>
             {
               ({data, error}) => (
                 <InsertUserMutation mutation={INSERT_NEW_USER} variables={{
-                  email: inputValues[InputField.EMAIL],
+                  email: inputValues[InputField.EMAIL].toLocaleLowerCase(),
                   username: inputValues[InputField.USERNAME],
                   password: inputValues[InputField.PASSWORD],
                 }}>
@@ -66,13 +70,16 @@ const SignUpOverlay: FC<WithApolloClient<{}> & RouteComponentProps> = ({client, 
                           color="primary"
                           fullWidth
                           onClick={() => {
-                            insertUser()
-                              .then((response) => {
-                                if(response && response.data && response.data.insert_users.returning.length) {
-                                  setUser(response.data.insert_users.returning[0]);
-                                  dispatch(hideOverlay())
-                                }
-                              });
+                            if (inputIsValid()) {
+                              insertUser()
+                                .then((response) => {
+                                  if(response && response.data && response.data.insert_users.returning.length) {
+                                    setUser(response.data.insert_users.returning[0]);
+                                    dispatch(hideOverlay())
+                                  }
+                                });
+                            }
+                            setInputError(true);
                           }}
                           disabled={!!error || !!(data && data.users && data.users.length > 0)}
                         >
@@ -87,22 +94,28 @@ const SignUpOverlay: FC<WithApolloClient<{}> & RouteComponentProps> = ({client, 
           </UsersQuery>
         }
         content={
-          <UsersQuery query={GET_USER_BY_EMAIL} variables={{email: inputValues[InputField.EMAIL]}}>
+          <UsersQuery query={GET_USER_BY_EMAIL} variables={{email: inputValues[InputField.EMAIL].toLocaleLowerCase()}}>
             {
               ({data, error}) => (
                 <form noValidate autoComplete="off">
                   <TextField
+                    required
                     fullWidth
                     autoFocus
-                    error={!!error}
+                    error={!!error || inputIsEmpty(InputField.USERNAME)}
                     label={InputField.USERNAME}
                     value={inputValues[InputField.USERNAME]}
                     onChange={handleChange(InputField.USERNAME)}
                     margin="normal"
                   />
+                  {
+                    inputError && inputIsEmpty(InputField.USERNAME)
+                      && <FormHelperText id="component-error-text">Поле обязательно для заполнения</FormHelperText>
+                  }
                   <TextField
+                    required
                     fullWidth
-                    error={!!error || (data && data.users && data.users.length > 0)}
+                    error={!!error || (data && data.users && data.users.length > 0) || inputIsEmpty(InputField.EMAIL)}
                     label={InputField.EMAIL}
                     value={inputValues[InputField.EMAIL]}
                     onChange={handleChange(InputField.EMAIL)}
@@ -112,15 +125,24 @@ const SignUpOverlay: FC<WithApolloClient<{}> & RouteComponentProps> = ({client, 
                     data && data.users && data.users.length > 0 
                       && <FormHelperText id="component-error-text">Пользователь с таким адресом уже существует</FormHelperText>
                   }
+                  {
+                    inputError && inputIsEmpty(InputField.EMAIL)
+                      && <FormHelperText id="component-error-text">Поле обязательно для заполнения</FormHelperText>
+                  }
                   <TextField
                     fullWidth
-                    error={!!error}
+                    required
+                    error={!!error || inputIsEmpty(InputField.PASSWORD)}
                     label={InputField.PASSWORD}
                     value={inputValues[InputField.PASSWORD]}
                     onChange={handleChange(InputField.PASSWORD)}
                     type="password"
                     margin="normal"
                   />
+                  {
+                    inputError && inputIsEmpty(InputField.PASSWORD)
+                      && <FormHelperText id="component-error-text">Поле обязательно для заполнения</FormHelperText>
+                  }
                 </form>
               )
             }
@@ -131,4 +153,4 @@ const SignUpOverlay: FC<WithApolloClient<{}> & RouteComponentProps> = ({client, 
   )
 }
 
-export default withRouter(withApollo(SignUpOverlay))
+export default SignUpOverlay;

@@ -8,8 +8,14 @@ import Overlay from '.';
 import { LOADING_ICON_SIZE } from '../../constants/styles';
 import { showOverlay } from '../../context/actions';
 import { useOverlayContext } from '../../context/OverlaysContext';
-import { Game, OverlayKey, User } from '../../models';
-import { GET_GAME, GetGameQueryVariables, SET_ACTIVE_GAME, SetActiveGameQueryVariables } from '../../queries';
+import { Game, OverlayKey } from '../../models';
+import {
+  GET_GAME,
+  GetGameQueryVariables,
+  SET_ACTIVE_GAME,
+  SetActiveGameData,
+  SetActiveGameQueryVariables,
+} from '../../queries';
 import { getUser, setUser } from '../../services';
 import OverlayWidget from './OverlayWidget';
 
@@ -29,8 +35,7 @@ const JoinGameOverlay: FC<RouteComponentProps> = ({history}) => {
   }
 
   const {data, error, loading} = useQuery<{games: Game[]}, GetGameQueryVariables>(GET_GAME, {variables: {title: values[InputField.TITLE]}})
-  const setActiveGame = useMutation<Pick<User, 'active_game'>, SetActiveGameQueryVariables>(SET_ACTIVE_GAME)
-  console.log(data, error, loading);
+  const setActiveGame = useMutation<SetActiveGameData, SetActiveGameQueryVariables>(SET_ACTIVE_GAME);
 
   function isButtonDisabled() {
     if (data && data.games.length === 1) return false;
@@ -38,16 +43,17 @@ const JoinGameOverlay: FC<RouteComponentProps> = ({history}) => {
   }
   const user = getUser();
   function handleJoin() {
+    
     if (data && data.games.length === 1 && user) {
-      console.log({userId: user.id, gameId: data.games[0].id});
       
       setActiveGame({variables: {userId: user.id, gameId: data.games[0].id}})
-        .then(({data}: {data: {update_users: {returning: Array<Pick<User, 'active_game'>>}}}) => {
-          console.log(data);
-          if(data && data.update_users && data.update_users.returning) {
-            
-            setUser({...user, active_game: data.update_users.returning[0].active_game});
-            dispatch(showOverlay(OverlayKey.SELECT_CHARACTER))
+        .then(({data: mutationData}: {data: SetActiveGameData}) => {
+          if(mutationData
+              && mutationData.update_users
+              && mutationData.update_users.returning) {
+            setUser({...user, active_game: mutationData.update_users.returning[0].active_game});
+
+            dispatch(showOverlay(OverlayKey.SELECT_CHARACTER));
           }
         })
     }

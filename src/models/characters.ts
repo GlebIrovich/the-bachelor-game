@@ -1,3 +1,5 @@
+import { SkillType } from './games';
+
 export enum CharacterType {
   THIEF = 'thief',
   WIZARD = 'wizard',
@@ -29,4 +31,10 @@ export const characterDescriptionMap = {
   [CharacterType.WIZARD]: `
     Ученики магических школ научились контролировать потоки энергии, окружающие наш мир.
     Черпая знания из древних свитков, маги стали непрезойденными мастерами заклинаний, лекарями и опасными противниками. `,
+}
+
+export const skillTypeMap = {
+  [SkillType.ARTEFACT]: 'Способность Артефакта',
+  [SkillType.ATTACK]: 'Атакующая способность',
+  [SkillType.DEFENCE]: 'Защитная способность',
 }

@@ -5,7 +5,7 @@ import { BrowserRouter } from 'react-router-dom';
 
 import Confetti from './components/Confetti';
 import { BASE_URL } from './config';
-import CharacterDescriptionOverlay from './containers/Overlay/CharacterDescription';
+import CharacterDescriptionOverlay from './containers/Overlay/CharacterDescriptionOverlay';
 import GameCompletedOverlay from './containers/Overlay/GameCompletedOverlay';
 import JoinGameOverlay from './containers/Overlay/JoinGameOverlay';
 import LoginOverlay from './containers/Overlay/LoginOverlay';

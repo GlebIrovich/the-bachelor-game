@@ -1,5 +1,6 @@
 import { Button, CircularProgress, MenuItem, Select } from '@material-ui/core';
 import React, { ChangeEvent, FC, useState } from 'react';
+import { withApollo, WithApolloClient } from 'react-apollo';
 import { useMutation, useQuery } from 'react-apollo-hooks';
 import { RouteComponentProps, withRouter } from 'react-router';
 import styled from 'styled-components';
@@ -24,7 +25,7 @@ const StyledProgress = styled(CircularProgress)`
   margin-right: 0.5em !important;
 `;
 
-const SelectCharacterOverlay: FC<RouteComponentProps> = ({history}) => {
+const SelectCharacterOverlay: FC<RouteComponentProps & WithApolloClient<{}>> = ({history, client}) => {
   const [_state, dispatch] = useOverlayContext();
   const [character, selectCharacter] = useState<CharacterType | undefined>();
   const user = getUser()!;
@@ -44,7 +45,7 @@ const SelectCharacterOverlay: FC<RouteComponentProps> = ({history}) => {
           console.log(data, gameData);
           if(data && data.update_users && data.update_users.returning && gameData && gameData.games && gameData.games.length) {
             setUser({...user, character: data.update_users.returning[0].character});
-            history.push(gamePath(gameData.games[0].title))
+            client.clearStore().then(() => history.push(gamePath(gameData.games[0].title)));
           }
           dispatch(hideOverlay())
         })
@@ -93,4 +94,4 @@ const SelectCharacterOverlay: FC<RouteComponentProps> = ({history}) => {
   )
 }
 
-export default withRouter(SelectCharacterOverlay)
+export default withRouter(withApollo(SelectCharacterOverlay));

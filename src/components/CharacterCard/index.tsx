@@ -6,7 +6,7 @@ import PlayerInfo from '../../containers/PlayerInfo';
 import SkillsContainer from '../../containers/SkillsContainer';
 import { showOverlay } from '../../context/actions';
 import { useOverlayContext } from '../../context/OverlaysContext';
-import { OverlayKey, User } from '../../models';
+import { OverlayKey, Player, User } from '../../models';
 import { ReactComponent as CharAvatar } from './avatars/dummy.svg';
 
 const StyledAvatar = styled(Avatar)`
@@ -25,9 +25,10 @@ const StyledCard = styled(Paper)`
 
 interface Props {
   user: User;
+  gameData: Player;
 }
 
-const CharacterCard: FC<Props> = ({user}) => {
+const CharacterCard: FC<Props> = ({user, gameData}) => {
   const [, dispatch] = useOverlayContext();
   return (
     <StyledCard>
@@ -42,10 +43,10 @@ const CharacterCard: FC<Props> = ({user}) => {
         <Grid item xs={8} zeroMinWidth>
           
           <PlayerInfo username={user.username} character={user.character!} />
-          <SkillsContainer />
+          <SkillsContainer gameData={gameData}/>
         </Grid>
         <Grid item zeroMinWidth>
-          <Typography align="right">10</Typography>
+          <Typography align="right">{gameData.score}</Typography>
         </Grid>
       </Grid>
     </StyledCard>

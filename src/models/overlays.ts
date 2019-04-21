@@ -7,6 +7,7 @@ export enum OverlayKey {
   LOGIN = 'login',
   SIGN_UP = 'signUp',
   CHARACTER_DESCRIPTION = 'characterDescription',
+  SKILL_DESCRIPTION = 'skillDescription',
 }
 
 export interface OverlayContextState {

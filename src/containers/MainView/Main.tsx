@@ -1,6 +1,6 @@
 import Button from '@material-ui/core/Button';
 import React, { FC, useEffect } from 'react';
-import { useQuery } from 'react-apollo-hooks';
+import { Query } from 'react-apollo';
 import { RouteComponentProps, withRouter } from 'react-router';
 import styled from 'styled-components';
 
@@ -21,17 +21,18 @@ interface Props {
   loginRequired?: boolean;
 }
 
+class GameQuery extends Query<{games: [Game]}, GetGameByIdQueryVariables>{}
+
 const Main: FC<RouteComponentProps & Props> = ({history, loginRequired}) => {
   const [, dispatch] = useOverlayContext()
   const user = getUser();
-  const {data, error, loading} = useQuery<{games: [Game]}, GetGameByIdQueryVariables>(GET_GAME_BY_ID, {variables: {gameId: user && user.active_game!}})
 
   useEffect(() => loginRequired ? dispatch(showOverlay(OverlayKey.LOGIN)) : undefined);
 
-  function handleJoinGameClick() {
+  function handleJoinGameClick(games?: [Game]) {
     if (user) {
-      if (user.active_game && user.character && data && data.games) {
-        history.push(gamePath(data.games[0].title))
+      if (user.character && games && games.length) {
+        history.push(gamePath(games[0].title))
       } else {
         dispatch(showOverlay(OverlayKey.JOIN_GAME))
       }
@@ -45,10 +46,18 @@ const Main: FC<RouteComponentProps & Props> = ({history, loginRequired}) => {
       <p>
           Welcome to Kekopolia!
       </p>
-      <StyledButton
-        disabled={loading}
-        onClick={handleJoinGameClick} variant="outlined" color="primary">Присоединиться</StyledButton>
-      <StyledButton onClick={() => dispatch(showOverlay(OverlayKey.LOGIN))} variant="outlined" color="secondary">Новая игра</StyledButton>
+      <GameQuery query={GET_GAME_BY_ID} variables={{gameId: user && user.active_game}}>
+        {
+          ({data, loading}) => (
+            <React.Fragment>
+              <StyledButton
+                disabled={loading}
+                onClick={() => handleJoinGameClick(data && data.games)} variant="outlined" color="primary">Присоединиться</StyledButton>
+              <StyledButton onClick={() => dispatch(showOverlay(OverlayKey.LOGIN))} variant="outlined" color="secondary">Новая игра</StyledButton>
+            </React.Fragment>
+          )
+        }
+      </GameQuery>
     </div>
   );
 }
