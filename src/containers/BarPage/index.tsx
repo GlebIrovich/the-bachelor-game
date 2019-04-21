@@ -4,7 +4,7 @@ import BarStepsWidget from '../BarStepsWidget';
 import Map from '../Map';
 
 interface Props {
-  disableTabSwipe: React.Dispatch<React.SetStateAction<boolean>>
+  disableTabSwipe: (disable: boolean) => void;
 }
 
 const BarPage = ({disableTabSwipe}: Props) => {

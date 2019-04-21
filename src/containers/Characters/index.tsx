@@ -1,12 +1,16 @@
-import React from 'react';
+import React, { FC } from 'react';
 
 import CharacterCard from '../../components/CharacterCard';
-import { CharacterType } from '../../models';
+import { User } from '../../models';
 
-const Characters = () => {
+interface Props {
+  users: User[];
+}
+
+const Characters: FC<Props> = ({users}) => {
   return (
     <div>
-      <CharacterCard character={ CharacterType.PALADIN } playerName="Vova" />
+      {users.map(user => <CharacterCard key={user.id} character={ user.character! } playerName={user.username} />)}
     </div>
   )
 }

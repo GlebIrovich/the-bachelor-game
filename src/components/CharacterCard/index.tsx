@@ -16,6 +16,7 @@ const StyledCard = styled(Paper)`
   max-width: 30em;
   padding: 0 1em;
   min-height: 5.5em;
+  margin: 0 auto;
 `;
 
 interface Props {

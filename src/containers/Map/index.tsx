@@ -21,7 +21,7 @@ const initialLocation: ViewState = {
 };
 
 interface Props {
-  disableTabSwipe: React.Dispatch<React.SetStateAction<boolean>>
+  disableTabSwipe: (disable: boolean) => void;
 }
 
 interface StyledProps {

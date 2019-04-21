@@ -5,6 +5,7 @@ import { RouteComponentProps, withRouter } from 'react-router';
 import styled from 'styled-components';
 
 import Overlay from '.';
+import { LOADING_ICON_SIZE } from '../../constants/styles';
 import { showOverlay } from '../../context/actions';
 import { useOverlayContext } from '../../context/OverlaysContext';
 import { Game, OverlayKey, User } from '../../models';
@@ -56,25 +57,27 @@ const JoinGameOverlay: FC<RouteComponentProps> = ({history}) => {
     <Overlay>
       <OverlayWidget
         title="Поиск игры"
-        message="Введи название игры"
         actions={
           <Button
             onClick={handleJoin}
             color="primary"
             disabled={loading || !!error || isButtonDisabled()}
           >
-            {loading && <StyledProgress size="1em"/>}
+            {loading && <StyledProgress size={LOADING_ICON_SIZE}/>}
             Присоединиться
           </Button>
         }
         content={
-          <TextField
-            fullWidth
-            error={!!error}
-            value={values[InputField.TITLE]}
-            onChange={handleTitleChange(InputField.TITLE)}
-            margin="normal"
-          />
+          <form noValidate autoComplete="off">
+            <TextField
+              fullWidth
+              label="Название игры"
+              error={!!error}
+              value={values[InputField.TITLE]}
+              onChange={handleTitleChange(InputField.TITLE)}
+              margin="normal"
+            />
+          </form>
         }
       />
     </Overlay>

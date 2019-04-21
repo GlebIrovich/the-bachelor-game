@@ -9,9 +9,9 @@ import { hideOverlay } from '../../context/actions';
 import { useOverlayContext } from '../../context/OverlaysContext';
 import { characterList, characterTitleMap, CharacterType, Game, User } from '../../models';
 import {
-  GET_AVAILABLE_CHARACTERS,
+  GET_ACTIVE_USERS,
   GET_GAME_BY_ID,
-  GetAvailableCharacterQueryVariables,
+  GetActiveUsersQueryVariables,
   GetGameByIdQueryVariables,
   SET_CHARACTER,
   SetCharacterQueryVariables,
@@ -33,7 +33,7 @@ const SelectCharacterOverlay: FC<RouteComponentProps> = ({history}) => {
     selectCharacter(event.target.value as any);
   }
 
-  const {data, error, loading} = useQuery<{users: Array<Pick<User, 'character'>>}, GetAvailableCharacterQueryVariables>(GET_AVAILABLE_CHARACTERS, {variables: {gameId: user.active_game!}})
+  const {data, error, loading} = useQuery<{users: Array<User>}, GetActiveUsersQueryVariables>(GET_ACTIVE_USERS, {variables: {gameId: user.active_game!}})
   const {data: gameData} = useQuery<{games: [Game]}, GetGameByIdQueryVariables>(GET_GAME_BY_ID, {variables: {gameId: user.active_game!}})
   console.log(data, gameData);
   const setCharacter = useMutation<User[], SetCharacterQueryVariables>(SET_CHARACTER)

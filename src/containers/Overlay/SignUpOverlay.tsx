@@ -23,7 +23,7 @@ const StyledProgress = styled(CircularProgress)`
   margin-right: 0.5em !important;
 `;
 
-const LoginOverlay: FC<WithApolloClient<{}> & RouteComponentProps> = ({client, history}) => {
+const SignUpOverlay: FC<WithApolloClient<{}> & RouteComponentProps> = ({client, history}) => {
   const [inputValues, changeValue] = useState({
     [InputField.EMAIL]: '',
     [InputField.PASSWORD]: '',
@@ -94,4 +94,4 @@ const LoginOverlay: FC<WithApolloClient<{}> & RouteComponentProps> = ({client, h
   )
 }
 
-export default withRouter(withApollo(LoginOverlay))
+export default withRouter(withApollo(SignUpOverlay))

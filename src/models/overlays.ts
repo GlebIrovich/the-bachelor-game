@@ -5,6 +5,7 @@ export enum OverlayKey {
   JOIN_GAME = 'gameJoin',
   SELECT_CHARACTER = 'selectCharacter',
   LOGIN = 'login',
+  SIGN_UP = 'signUp',
 }
 
 export interface OverlayContextState {

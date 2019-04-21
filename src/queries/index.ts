@@ -75,14 +75,18 @@ export const GET_USER = gql`
   }
 `;
 
-export interface GetAvailableCharacterQueryVariables extends OperationVariables {
+export interface GetActiveUsersQueryVariables extends OperationVariables {
   gameId: GameId;
 }
 
-export const GET_AVAILABLE_CHARACTERS = gql`
+export const GET_ACTIVE_USERS = gql`
   query getUser($gameId: uuid!){
     users(where: {active_game: {_eq: $gameId}}) {
+      active_game
       character
+      email
+      id
+      username
     }
   }
 `;

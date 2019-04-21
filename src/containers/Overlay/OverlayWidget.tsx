@@ -23,7 +23,8 @@ const Message = styled(Typography)`
 const StyledActionContainer = styled.div`
   margin-top: 1em;
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
+  width: 100%;
 `;
 
 const StyledCancelButton = styled(Button)`
@@ -34,7 +35,7 @@ const StyledCancelButton = styled(Button)`
 interface Props {
   title: string;
   actions: ReactNode;
-  message: string;
+  message?: string;
   content?: ReactNode;
   onCancel?: () => void;
 }
@@ -50,9 +51,9 @@ const OverlayWidget: FC<Props> = ({title, actions, message, content, onCancel}) 
       <Grid container>
         <Grid item>
           <Title>{title}</Title>
-          <Message>{message}</Message>
+          { message && <Message>{message}</Message>}
         </Grid>
-        <Grid item>
+        <Grid item xs={12}>
           {content}
         </Grid>
       </Grid>
