@@ -2,40 +2,46 @@ import { Avatar, Grid, Paper, Typography } from '@material-ui/core';
 import React, { FC } from 'react';
 import styled from 'styled-components';
 
+import PlayerInfo from '../../containers/PlayerInfo';
 import SkillsContainer from '../../containers/SkillsContainer';
-import { characterTitleMap, CharacterType } from '../../models';
+import { showOverlay } from '../../context/actions';
+import { useOverlayContext } from '../../context/OverlaysContext';
+import { OverlayKey, User } from '../../models';
 import { ReactComponent as CharAvatar } from './avatars/dummy.svg';
 
 const StyledAvatar = styled(Avatar)`
   background-color: transparent !important;
   width: 4em !important;
   height: 4em !important;
+  cursor: pointer;
 `;
 
 const StyledCard = styled(Paper)`
   max-width: 30em;
   padding: 0 1em;
   min-height: 5.5em;
-  margin: 0 auto;
+  margin: 1.5em auto;
 `;
 
 interface Props {
-  character: CharacterType;
-  playerName: string;
-  alt?: string;
+  user: User;
 }
 
-const CharacterCard: FC<Props> = ({alt, playerName, character}) => {
+const CharacterCard: FC<Props> = ({user}) => {
+  const [, dispatch] = useOverlayContext();
   return (
     <StyledCard>
       <Grid container wrap="nowrap" spacing={16} alignContent="center">
         <Grid item>
-          <StyledAvatar alt={alt || ''}>
+          <StyledAvatar
+            onClick={() => dispatch(showOverlay(OverlayKey.CHARACTER_DESCRIPTION, {character: user.character}))}
+          >
             <CharAvatar />
           </StyledAvatar>
         </Grid>
         <Grid item xs={8} zeroMinWidth>
-          <Typography>{`${playerName} | ${characterTitleMap[character]}`}</Typography>
+          
+          <PlayerInfo username={user.username} character={user.character!} />
           <SkillsContainer />
         </Grid>
         <Grid item zeroMinWidth>

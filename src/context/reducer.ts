@@ -6,12 +6,14 @@ export const reducer = (state: OverlayContextState, action: Action): OverlayCont
       return {
         ...state,
         overlay: action.payload,
+        props: action.props,
       };
     
     case OverlayActionType.HIDE:
       return {
         ...state,
         overlay: undefined,
+        props: undefined,
       };
       
     default:

@@ -6,9 +6,9 @@ import styled from 'styled-components';
 
 import Overlay from '.';
 import { LOADING_ICON_SIZE } from '../../constants/styles';
-import { hideOverlay } from '../../context/actions';
+import { hideOverlay, showOverlay } from '../../context/actions';
 import { useOverlayContext } from '../../context/OverlaysContext';
-import { User } from '../../models';
+import { OverlayKey, User } from '../../models';
 import { LOGIN, LoginQueryVariables } from '../../queries';
 import { setUser } from '../../services';
 import OverlayWidget from './OverlayWidget';
@@ -54,6 +54,10 @@ const LoginOverlay: FC<WithApolloClient<{}> & RouteComponentProps> = ({client, h
   const handleChange = (inputName: InputField) => (event: ChangeEvent<HTMLInputElement>) => {
     changeValue({ ...inputValues, [inputName]: event.currentTarget.value })
   }
+
+  function signUp() {
+    dispatch(showOverlay(OverlayKey.SIGN_UP));
+  }
   
   return (
     <Overlay>
@@ -65,6 +69,11 @@ const LoginOverlay: FC<WithApolloClient<{}> & RouteComponentProps> = ({client, h
           <Button variant="outlined" color="primary" fullWidth onClick={login}>
             {loading && <StyledProgress size={LOADING_ICON_SIZE}/>}
             Войти
+          </Button>
+        }
+        secondaryActions={
+          <Button variant="outlined" color="primary" fullWidth onClick={signUp}>
+            Зарегистрироваться
           </Button>
         }
         content={

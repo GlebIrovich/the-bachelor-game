@@ -5,10 +5,12 @@ import { BrowserRouter } from 'react-router-dom';
 
 import Confetti from './components/Confetti';
 import { BASE_URL } from './config';
+import CharacterDescriptionOverlay from './containers/Overlay/CharacterDescription';
 import GameCompletedOverlay from './containers/Overlay/GameCompletedOverlay';
 import JoinGameOverlay from './containers/Overlay/JoinGameOverlay';
 import LoginOverlay from './containers/Overlay/LoginOverlay';
 import SelectCharacterOverlay from './containers/Overlay/SelectCharacterOverlay';
+import SignUpOverlay from './containers/Overlay/SignUpOverlay';
 import Routes from './containers/Routes';
 import { useOverlayContext } from './context/OverlaysContext';
 import { OverlayKey } from './models/overlays';
@@ -22,16 +24,18 @@ const overlayMap: OverlayMapping = {
   [OverlayKey.JOIN_GAME]: JoinGameOverlay,
   [OverlayKey.SELECT_CHARACTER]: SelectCharacterOverlay,
   [OverlayKey.LOGIN]: LoginOverlay,
+  [OverlayKey.SIGN_UP]: SignUpOverlay,
+  [OverlayKey.CHARACTER_DESCRIPTION]: CharacterDescriptionOverlay,
 }
 
 const App = () => {
-  const [{overlay}] = useOverlayContext()
+  const [{overlay, props}] = useOverlayContext()
   const OverlayComponent = overlay && overlayMap[overlay];
   return (
     <BrowserRouter basename={BASE_URL}>
       <Routes />
       {
-        OverlayComponent && <OverlayComponent />
+        OverlayComponent && <OverlayComponent {...props}/>
       }
       {
         overlay === OverlayKey.GAME_COMPLETED ? <Confetti /> : undefined

@@ -10,7 +10,7 @@ interface Props {
 const Characters: FC<Props> = ({users}) => {
   return (
     <div>
-      {users.map(user => <CharacterCard key={user.id} character={ user.character! } playerName={user.username} />)}
+      {users.map(user => <CharacterCard key={user.id} user={user} />)}
     </div>
   )
 }

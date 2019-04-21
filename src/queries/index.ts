@@ -3,14 +3,36 @@ import { OperationVariables } from 'react-apollo';
 
 import { GameId, UserId } from '../models';
 
-export const GET_USER_BY_ID = gql`
-  query getUserById($userId: ID!){
-    users(where: {id: {_eq: $userId}}) {
+export interface GetUserByEmailQueryVariables extends OperationVariables {
+  email: string,
+}
+
+export const GET_USER_BY_EMAIL = gql`
+  query getUserByEmail($email: String!){
+    users(where: {email: {_eq: $email}}) {
       id
-      name
     }
   }
 `;
+
+export interface InsertNewUserMutationVariables extends OperationVariables {
+  email: string,
+  username: string,
+  password: string;
+}
+
+export const INSERT_NEW_USER = gql`
+  mutation insertNewUser($email: String!, $password: String!, $username: String!) {
+  insert_users(objects: {email: $email, password: $password, username: $username}) {
+    returning {
+      id
+      email
+      username
+    }
+  }
+}
+
+`
 
 export interface LoginQueryVariables extends OperationVariables {
   email: string,

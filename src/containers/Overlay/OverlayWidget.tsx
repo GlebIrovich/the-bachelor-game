@@ -4,6 +4,11 @@ import styled from 'styled-components';
 
 import { hideOverlay } from '../../context/actions';
 import { useOverlayContext } from '../../context/OverlaysContext';
+import { JustifyContent } from '../../models';
+
+interface StyledProps {
+  justifiedContent: JustifyContent;
+}
 
 const StyledOverlay = styled(Paper)`
   width: 20em;
@@ -23,7 +28,7 @@ const Message = styled(Typography)`
 const StyledActionContainer = styled.div`
   margin-top: 1em;
   display: flex;
-  justify-content: space-between;
+  justify-content: ${({justifiedContent}: StyledProps) => justifiedContent};
   width: 100%;
 `;
 
@@ -35,13 +40,15 @@ const StyledCancelButton = styled(Button)`
 interface Props {
   title: string;
   actions: ReactNode;
+  secondaryActions?: ReactNode;
   message?: string;
   content?: ReactNode;
   onCancel?: () => void;
+  hideCancelAction?: boolean;
 }
 
-const OverlayWidget: FC<Props> = ({title, actions, message, content, onCancel}) => {
-  const [_state, dispatch] = useOverlayContext();
+const OverlayWidget: FC<Props> = ({title, actions, message, content, onCancel, secondaryActions, hideCancelAction}) => {
+  const [, dispatch] = useOverlayContext();
   function handleCancel() {
     if (onCancel) onCancel();
     dispatch(hideOverlay());
@@ -58,13 +65,30 @@ const OverlayWidget: FC<Props> = ({title, actions, message, content, onCancel}) 
         </Grid>
       </Grid>
       <Grid container justify="flex-end">
-        <StyledActionContainer>
-          <StyledCancelButton color="secondary" variant="outlined" onClick={handleCancel}>
-            Отмена
-          </StyledCancelButton>
-          {actions}
-        </StyledActionContainer>
+          {
+            !hideCancelAction
+            ? (
+              <StyledActionContainer justifiedContent={JustifyContent.SPACE_BETWEEN}>
+                <StyledCancelButton color="secondary" variant="outlined" onClick={handleCancel}>
+                  Отмена
+                </StyledCancelButton>
+                {actions}
+              </StyledActionContainer>
+            ) : (
+              <StyledActionContainer justifiedContent={JustifyContent.FLEX_END}>
+                {actions}
+              </StyledActionContainer>
+            )
+          }
       </Grid>
+      { secondaryActions &&
+        (
+          <Grid container justify="flex-end">
+            <StyledActionContainer justifiedContent={JustifyContent.SPACE_BETWEEN}>
+              {secondaryActions}
+            </StyledActionContainer>
+          </Grid> 
+      )}
     </StyledOverlay>
   )
 }
