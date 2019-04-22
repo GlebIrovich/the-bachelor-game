@@ -29,3 +29,23 @@ export const PLAYERS_SUBSCRIPTION = gql`
     }
   }
 `;
+
+export const GAME_SUBSCRIPTION = gql`
+  subscription onGameChange($gameId: uuid!){
+    games(where: {id: {_eq: $gameId}}) {
+      bars(order_by: {order: asc}) {
+        address
+        id
+        latitude
+        longitude
+        order
+        status
+        title
+      }
+      creator
+      id
+      modified
+      title
+    }
+  }
+`;

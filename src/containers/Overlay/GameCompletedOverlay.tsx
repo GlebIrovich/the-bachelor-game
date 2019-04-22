@@ -11,10 +11,12 @@ const GameCompletedOverlay = () => {
   return (
     <Overlay>
       <OverlayWidget
+        hideCancelAction
         title="Победа!"
         message="Ура! Мы это сделали!"
         actions={
           <Button
+            fullWidth
             onClick={() => dispatch(hideOverlay())}
             variant="contained"
             color="primary"

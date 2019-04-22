@@ -7,10 +7,12 @@ import PageLayout from '../components/PageLayout';
 import { convertActiveUser } from '../helpers/convertActiveUser';
 import { ActiveUser, Game, UserId } from '../models';
 import {
+  GAME_SUBSCRIPTION,
   GET_ACTIVE_USERS,
   GET_GAME_BY_ID,
   GetActiveUsersData,
   GetActiveUsersQueryVariables,
+  GetGameByIdData,
   GetGameByIdQueryVariables,
   PLAYERS_SUBSCRIPTION,
 } from '../queries';
@@ -21,6 +23,7 @@ export interface Params {
   users: ActiveUser[];
   game: Game;
   subscribeToPlayers: any;
+  subscribeToGame: any;
 }
 
 const StyledLoadingContainer = styled.div`
@@ -33,7 +36,7 @@ interface Props {
   children: (props: Params) => React.ReactNode;
 }
 
-class GameQuery extends Query<{games: [Game]}, GetGameByIdQueryVariables>{}
+class GameQuery extends Query<GetGameByIdData, GetGameByIdQueryVariables>{}
 class UsersQuery extends Query<GetActiveUsersData, GetActiveUsersQueryVariables>{}
 
 export default class UserAndGame extends Component<Props> {
@@ -44,16 +47,23 @@ export default class UserAndGame extends Component<Props> {
       <PageLayout>
         <GameQuery query={GET_GAME_BY_ID} variables={{gameId: user.active_game}}>
           {
-            ({data: gameData, loading}) => !loading && gameData ? (
+            ({data: gameData, loading, subscribeToMore: subscribeToMoreGame}) => !loading && gameData ? (
               <UsersQuery query={GET_ACTIVE_USERS} variables={{gameId: gameData.games[0].id }} >
                 {
-                  ({data: usersData, loading: usersLoading, subscribeToMore}) => {
+                  ({data: usersData, loading: usersLoading, subscribeToMore: subscribeToMorePlayers}) => {
                     if (!usersLoading && usersData) {
                       return this.props.children({
                         currentUserId: user.id,
                         users: convertActiveUser(usersData.players),
                         game: gameData.games[0],
-                        subscribeToPlayers: () => subscribeToMore({
+                        subscribeToGame: () => subscribeToMoreGame({
+                          document: GAME_SUBSCRIPTION,
+                          variables: {gameId: gameData.games[0].id },
+                          updateQuery: (prev, {subscriptionData: {data}}) => {
+                            return data || prev;
+                          },
+                        }),
+                        subscribeToPlayers: () => subscribeToMorePlayers({
                           document: PLAYERS_SUBSCRIPTION,
                           variables: {gameId: gameData.games[0].id },
                           updateQuery: (prev, {subscriptionData: {data}}) => {

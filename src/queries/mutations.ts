@@ -107,3 +107,35 @@ export const UPDATE_SKILL_STATUS = (skill: SkillType) => gql`
     }
   }
 `;
+
+export interface ResetSkillsStatusMutationVariables extends OperationVariables {
+  gameId: GameId;
+}
+
+export const RESET_SKILLS_STATUS = gql`
+  mutation updateSkills($gameId: uuid!) {
+    update_players(where: {game_id: {_eq: $gameId}}, _set: {attack: "ready", defence: "ready"}) {
+      affected_rows
+    }
+  }
+`;
+
+export interface UpdateBarStatusMutationVariables extends OperationVariables {
+  barId: UserId;
+}
+
+export const UPDATE_BAR_STATUS = gql`
+  mutation updateBarStatus($barId: uuid!) {
+    update_bars(where: {id: {_eq: $barId}}, _set: {status: "active"}) {
+      affected_rows
+    }
+  }
+`;
+
+export const RESET_BAR_STATUS = gql`
+  mutation updateBarStatus {
+    update_bars(where: {}, _set: {status: "none"}) {
+      affected_rows
+    }
+  }
+`;

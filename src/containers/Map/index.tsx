@@ -5,6 +5,8 @@ import styled from 'styled-components';
 import { REACT_APP_MAP_BOX_TOKEN } from '../../config';
 import { DEFAULT_MAP_HEIGHT_PX } from '../../constants/styles';
 import { useWindowSize } from '../../helpers/useWindowSize';
+import { Level, LevelStatus } from '../../models';
+import BarMarker from './BarMarker';
 
 const StyledGeolocationControls = styled(GeolocateControl)`
   background-color: transparent !important;
@@ -22,6 +24,7 @@ const initialLocation: ViewState = {
 
 interface Props {
   disableTabSwipe: (disable: boolean) => void;
+  bars: Level[];
 }
 
 interface StyledProps {
@@ -32,11 +35,11 @@ const StyledMapContainer = styled.div`
   width: ${({width}: StyledProps) => width}px;
 `;
 
-const Map: FC<Props> = ({disableTabSwipe}) => {
+const Map: FC<Props> = ({disableTabSwipe, bars}) => {
   const [viewport, handleViewportChange] = useState<ViewState>(initialLocation)
   const [componentWidth, setWidth] = React.useState(useWindowSize().width);
   useEffect(() => {
-    window.addEventListener('resize', () => {console.log('resize', useWindowSize().width); setWidth(useWindowSize().width)})
+    window.addEventListener('resize', () => setWidth(useWindowSize().width))
 })
 
   return (
@@ -56,6 +59,14 @@ const Map: FC<Props> = ({disableTabSwipe}) => {
           positionOptions={{enableHighAccuracy: false}}
           trackUserLocation
         />
+        {bars.map(({latitude, longitude, id, status}) => (
+          <BarMarker
+            key={id}
+            latitude={latitude}
+            longitude={longitude}
+            active={status === LevelStatus.ACTIVE}
+          />
+        ))}
       </ReactMapGL>
     </StyledMapContainer>
   );

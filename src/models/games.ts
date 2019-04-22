@@ -6,8 +6,8 @@ export interface Game {
   id: GameId;
   title: string;
   modified: number; 
-  game_data: GameData;
   creator: UserId;
+  bars: Level[];
 }
 
 export enum SkillStatus {
@@ -30,13 +30,23 @@ export interface Player {
   artefact: SkillStatus;
 }
 
+export enum LevelStatus {
+  NONE = 'none',
+  ACTIVE = 'active',
+}
+
 export interface Level {
   title: string;
-  address: string;
   id: string;
+  address: string;
+  latitude: number;
+  longitude: number;
+  order: number;
+  status: LevelStatus;
 }
 
 export interface GameData {
   levels: Level[];
   activeLevel: string; // Level Id;
 }
+

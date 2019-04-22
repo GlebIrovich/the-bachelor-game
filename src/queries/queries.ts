@@ -1,7 +1,7 @@
 import gql from 'graphql-tag';
 import { OperationVariables } from 'react-apollo';
 
-import { GameId, Player, User, UserId } from '../models';
+import { Game, GameId, Player, User, UserId } from '../models';
 
 export interface GetUserByEmailQueryVariables extends OperationVariables {
   email: string,
@@ -52,14 +52,26 @@ export interface GetGameByIdQueryVariables extends OperationVariables {
   gameId?: GameId;
 }
 
+export interface GetGameByIdData {
+  games: [Game];
+}
+
 export const GET_GAME_BY_ID = gql`
   query getGameById($gameId: uuid!){
     games(where: {id: {_eq: $gameId}}) {
+      bars(order_by: {order: asc}) {
+        address
+        id
+        latitude
+        longitude
+        order
+        status
+        title
+      }
       creator
       id
       modified
       title
-      game_data
     }
   }
 `;

@@ -1,30 +1,21 @@
 import { Button, Step, StepContent, StepLabel, Stepper, Typography } from '@material-ui/core';
-import React, { useEffect } from 'react';
+import React, { FC, useEffect } from 'react';
+import { useMutation } from 'react-apollo-hooks';
 import styled from 'styled-components';
 
-import Confetti from '../../components/Confetti';
 import { DEFAULT_MAP_HEIGHT_PX, FOOTER_HEIGHT_PX, HEADER_HEIGHT_PX } from '../../constants/styles';
 import { showOverlay } from '../../context/actions';
 import { useOverlayContext } from '../../context/OverlaysContext';
 import { useWindowSize } from '../../helpers/useWindowSize';
+import { GameId, Level, LevelStatus } from '../../models';
 import { OverlayKey } from '../../models/overlays';
-
-function getSteps() {
-  return ['Мартинез', 'Гадкий кайот', 'Бар Х'];
-}
-
-function getStepContent(step: number) {
-  switch (step) {
-    case 0:
-      return `Адрес Бара.`;
-    case 1:
-      return 'Адрес Бара.';
-    case 2:
-      return `Адрес Бара.`;
-    default:
-      return 'Неизвестный бар.';
-  }
-}
+import {
+  RESET_BAR_STATUS,
+  RESET_SKILLS_STATUS,
+  ResetSkillsStatusMutationVariables,
+  UPDATE_BAR_STATUS,
+  UpdateBarStatusMutationVariables,
+} from '../../queries';
 
 interface StyledContainerProps {
   height?: number;
@@ -46,14 +37,30 @@ const calculateContainerHeight = () => {
   return useWindowSize().height - DEFAULT_MAP_HEIGHT_PX - HEADER_HEIGHT_PX - FOOTER_HEIGHT_PX;
 }
 
-const BarStepsWidget = () => {
+interface Props {
+  bars: Level[];
+  isCreator: boolean;
+  gameId: GameId;
+}
+
+const BarStepsWidget: FC<Props> = ({bars, isCreator, gameId}) => {
   const [activeStep, setActiveStep] = React.useState(0);
   const [containerHeight, setHeight] = React.useState(calculateContainerHeight());
+  const resetBarStatus = useMutation(RESET_BAR_STATUS);
+  const updateBarStatus = useMutation<{}, UpdateBarStatusMutationVariables>(UPDATE_BAR_STATUS);
+  const resetSkillsStatus = useMutation<{}, ResetSkillsStatusMutationVariables>(RESET_SKILLS_STATUS);
+
+  const updateBar = (barId: string) => {
+    resetBarStatus()
+      .then(data =>  {
+        updateBarStatus({variables: {barId}})
+        resetSkillsStatus({variables: {gameId}});
+      })
+  }
   const [, dispatch] = useOverlayContext()
   useEffect(() => {
     window.addEventListener('resize', () => setHeight(calculateContainerHeight()))
   })
-  const steps = getSteps();
 
   function handleNext() {
     setActiveStep(prevActiveStep => prevActiveStep + 1);
@@ -67,33 +74,37 @@ const BarStepsWidget = () => {
     return dispatch(showOverlay(OverlayKey.GAME_COMPLETED))
   }
 
+  const activeBar = bars.find(bar => bar.status === LevelStatus.ACTIVE);
+  const activeBarIndex = activeBar ? bars.indexOf(activeBar) : 0;
+
   return (
     <StepContainer height={containerHeight}>
-      <Stepper activeStep={activeStep} orientation="vertical">
-        {steps.map((title, index) => (
-          <Step key={title}>
-            <StepLabel>{title}</StepLabel>
-              <StepContent>
-                <StyledBarAddress>{getStepContent(index)}</StyledBarAddress>
-                <Button onClick={handleBack}>
-                  Назад
-                </Button>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={index === steps.length - 1 ? handleWin : handleNext}
-                >
-                  {index === steps.length - 1 ? 'Все!' : 'Дальше!'}
-                </Button>
-              </StepContent>
-          </Step>
-        ))}
+      <Stepper activeStep={activeBarIndex} orientation="vertical">
+        {
+          bars.map(({title, id, address}, index) => (
+            <Step key={id}>
+              <StepLabel>{title}</StepLabel>
+                <StepContent>
+                  <StyledBarAddress>{address}</StyledBarAddress>
+                  {
+                    index > 0 && isCreator && (
+                      <Button onClick={index > 0 ? () => updateBar(bars[index - 1].id) : undefined}>
+                        Назад
+                      </Button>
+                    )
+                  }
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={index === bars.length - 1 ? handleWin : () => updateBar(bars[index + 1].id)}
+                  >
+                    {index === bars.length - 1 ? 'Все!' : 'Дальше!'}
+                  </Button>
+                </StepContent>
+              </Step>
+            ))
+        }
       </Stepper>
-      {activeStep === steps.length && (
-        <React.Fragment>
-          <Confetti />
-        </React.Fragment>
-      )}
     </StepContainer>
   );
 }

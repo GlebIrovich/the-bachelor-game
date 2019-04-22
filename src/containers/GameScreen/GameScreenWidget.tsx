@@ -27,6 +27,7 @@ class GameScreenWidget extends Component<Props, {}> {
 
   public componentDidMount() {
     this.props.subscribeToPlayers();
+    this.props.subscribeToGame();
   }
 
   public render() {
@@ -39,7 +40,7 @@ class GameScreenWidget extends Component<Props, {}> {
           index={tabIndex}
           onChangeIndex={handleTabIndexChange}
         >
-          <BarPage disableTabSwipe={disableTabSwipe}/>
+          <BarPage disableTabSwipe={disableTabSwipe} game={rest.game} isCreator={rest.game.creator === rest.currentUserId}/>
           <TabContainer tabCount={3}>
             <Characters {...rest} isCreator={isCreator}/>
           </TabContainer>

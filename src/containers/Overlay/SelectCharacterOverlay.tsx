@@ -36,7 +36,6 @@ const SelectCharacterOverlay: FC<RouteComponentProps & WithApolloClient<{}>> = (
 
   const {data, error, loading} = useQuery<{users: Array<User>}, GetActiveUsersQueryVariables>(GET_ACTIVE_USERS, {variables: {gameId: user.active_game!}})
   const {data: gameData} = useQuery<{games: [Game]}, GetGameByIdQueryVariables>(GET_GAME_BY_ID, {variables: {gameId: user.active_game!}})
-  console.log(data, gameData);
   const setCharacter = useMutation<User[], SetCharacterQueryVariables>(SET_CHARACTER)
   function handleCharacterSelect() {
     if (character) {
