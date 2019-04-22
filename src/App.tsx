@@ -1,7 +1,7 @@
 import './App.css';
 
 import React, { ComponentType } from 'react';
-import { BrowserRouter } from 'react-router-dom';
+import { HashRouter } from 'react-router-dom';
 
 import Confetti from './components/Confetti';
 import { BASE_URL } from './config';
@@ -34,7 +34,7 @@ const App = () => {
   const [{overlay, props}] = useOverlayContext()
   const OverlayComponent = overlay && overlayMap[overlay];
   return (
-    <BrowserRouter basename={BASE_URL}>
+    <HashRouter basename={BASE_URL}>
       <Routes />
       {
         OverlayComponent && <OverlayComponent {...props}/>
@@ -42,7 +42,7 @@ const App = () => {
       {
         overlay === OverlayKey.GAME_COMPLETED ? <Confetti /> : undefined
       }
-    </BrowserRouter>
+    </HashRouter>
   )
 }
 
