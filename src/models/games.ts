@@ -1,10 +1,13 @@
+import { UserId } from './users';
+
 export type GameId = string;
 
 export interface Game {
   id: GameId;
   title: string;
-  created: number; 
+  modified: number; 
   game_data: GameData;
+  creator: UserId;
 }
 
 export enum SkillStatus {
@@ -19,10 +22,12 @@ export enum SkillType {
 }
 
 export interface Player {
+  game_id: GameId;
+  user_id: UserId;
   score: number;
-  attackSkill: SkillStatus;
-  defenceSkill: SkillStatus;
-  artefactSkill: SkillStatus;
+  attack: SkillStatus;
+  defence: SkillStatus;
+  artefact: SkillStatus;
 }
 
 export interface Level {

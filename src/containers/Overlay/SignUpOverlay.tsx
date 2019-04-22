@@ -66,7 +66,7 @@ const SignUpOverlay = () => {
                     (insertUser) => {
                       return (
                         <Button
-                          variant="outlined"
+                          variant="contained"
                           color="primary"
                           fullWidth
                           onClick={() => {

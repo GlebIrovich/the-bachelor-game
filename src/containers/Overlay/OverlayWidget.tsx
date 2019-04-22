@@ -4,11 +4,6 @@ import styled from 'styled-components';
 
 import { hideOverlay } from '../../context/actions';
 import { useOverlayContext } from '../../context/OverlaysContext';
-import { JustifyContent } from '../../models';
-
-interface StyledProps {
-  justifiedContent: JustifyContent;
-}
 
 const StyledOverlay = styled(Paper)`
   width: 20em;
@@ -27,14 +22,14 @@ const Message = styled(Typography)`
 
 const StyledActionContainer = styled.div`
   margin-top: 1em;
-  display: flex;
-  justify-content: ${({justifiedContent}: StyledProps) => justifiedContent};
   width: 100%;
+  > button {
+    margin-top: 0.8em;
+  }
 `;
 
 const StyledCancelButton = styled(Button)`
   margin-right: 1em !important;
-  min-width: 6em !important;
 `;
 
 interface Props {
@@ -65,30 +60,16 @@ const OverlayWidget: FC<Props> = ({title, actions, message, content, onCancel, s
         </Grid>
       </Grid>
       <Grid container justify="flex-end">
-          {
-            !hideCancelAction
-            ? (
-              <StyledActionContainer justifiedContent={JustifyContent.SPACE_BETWEEN}>
-                <StyledCancelButton color="secondary" variant="outlined" onClick={handleCancel}>
-                  Отмена
-                </StyledCancelButton>
-                {actions}
-              </StyledActionContainer>
-            ) : (
-              <StyledActionContainer justifiedContent={JustifyContent.FLEX_END}>
-                {actions}
-              </StyledActionContainer>
-            )
-          }
+        <StyledActionContainer>
+          {actions}
+          {secondaryActions}
+          {!hideCancelAction && (
+            <StyledCancelButton color="secondary" variant="outlined" onClick={handleCancel} fullWidth>
+              Отмена
+            </StyledCancelButton>
+          )}
+        </StyledActionContainer>
       </Grid>
-      { secondaryActions &&
-        (
-          <Grid container justify="flex-end">
-            <StyledActionContainer justifiedContent={JustifyContent.SPACE_BETWEEN}>
-              {secondaryActions}
-            </StyledActionContainer>
-          </Grid> 
-      )}
     </StyledOverlay>
   )
 }

@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { SkillStatus } from '../../models';
 
 interface StyledProps {
-  skillStatus: SkillStatus;
+  skillstatus: SkillStatus;
 }
 
 const StyledSkill = styled(Avatar)`
@@ -14,12 +14,18 @@ const StyledSkill = styled(Avatar)`
   height: 1.6em !important;
   font-size: 1.6em !important;
   margin-right: 0.5em;
-  filter: ${({skillStatus}: StyledProps) => skillStatus === SkillStatus.USED ? 'brightness(60%)' : 'brightness(100%)'};
+  filter: ${({skillstatus}: StyledProps) => skillstatus === SkillStatus.USED ? 'brightness(80%)' : 'brightness(100%)'};
+  cursor: pointer;
 `
 
-const SkillIcon: FC<StyledProps> = ({children, skillStatus}) => {
+interface Props {
+  skillStatus: SkillStatus;
+  onClick: () => void;
+}
+
+const SkillIcon: FC<Props> = ({children, skillStatus, onClick}) => {
   return (
-    <StyledSkill skillStatus={skillStatus}>{children}</StyledSkill>
+    <StyledSkill skillstatus={skillStatus} onClick={onClick}>{children}</StyledSkill>
   )
 }
 

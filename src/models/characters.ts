@@ -38,3 +38,21 @@ export const skillTypeMap = {
   [SkillType.ATTACK]: 'Атакующая способность',
   [SkillType.DEFENCE]: 'Защитная способность',
 }
+
+export const skillDescriptionMap = {
+  [CharacterType.PALADIN] : {
+    [SkillType.ARTEFACT]: 'Способность Артефакта',
+    [SkillType.ATTACK]: 'Атакующая способность',
+    [SkillType.DEFENCE]: 'Защитная способность',
+  },
+  [CharacterType.THIEF] : {
+    [SkillType.ARTEFACT]: 'Способность Артефакта',
+    [SkillType.ATTACK]: 'Атакующая способность',
+    [SkillType.DEFENCE]: 'Защитная способность',
+  },
+  [CharacterType.WIZARD] : {
+    [SkillType.ARTEFACT]: 'Способность Артефакта',
+    [SkillType.ATTACK]: 'Атакующая способность',
+    [SkillType.DEFENCE]: 'Защитная способность',
+  }
+}

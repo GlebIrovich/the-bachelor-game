@@ -67,7 +67,7 @@ const LoginOverlay: FC<WithApolloClient<{}> & RouteComponentProps> = ({client, h
         message="Войди в систему"
         onCancel={() => history.push('/')}
         actions={
-          <Button variant="outlined" color="primary" fullWidth onClick={login}>
+          <Button variant="contained" color="primary" fullWidth onClick={login}>
             {loading && <StyledProgress size={LOADING_ICON_SIZE}/>}
             Войти
           </Button>

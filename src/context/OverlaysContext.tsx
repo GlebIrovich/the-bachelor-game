@@ -11,7 +11,7 @@ type OverlayHook = GenericReducer<OverlayContextState, OverlayAction>
 export const OverlayContext = createContext<any>({});
 
 export const OverlayProvider: FC = ({children}) => (
-  <OverlayContext.Provider value={useReducer(reducer, initialState)}>
+  <OverlayContext.Provider value={useReducer(reducer, initialState)} key="overlay">
     {children}
   </OverlayContext.Provider>
 )

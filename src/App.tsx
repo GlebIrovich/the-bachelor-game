@@ -11,6 +11,7 @@ import JoinGameOverlay from './containers/Overlay/JoinGameOverlay';
 import LoginOverlay from './containers/Overlay/LoginOverlay';
 import SelectCharacterOverlay from './containers/Overlay/SelectCharacterOverlay';
 import SignUpOverlay from './containers/Overlay/SignUpOverlay';
+import SkillOverlay from './containers/Overlay/SkillOverlay';
 import Routes from './containers/Routes';
 import { useOverlayContext } from './context/OverlaysContext';
 import { OverlayKey } from './models/overlays';
@@ -26,6 +27,7 @@ const overlayMap: OverlayMapping = {
   [OverlayKey.LOGIN]: LoginOverlay,
   [OverlayKey.SIGN_UP]: SignUpOverlay,
   [OverlayKey.CHARACTER_DESCRIPTION]: CharacterDescriptionOverlay,
+  [OverlayKey.SKILL_DESCRIPTION]: SkillOverlay,
 }
 
 const App = () => {

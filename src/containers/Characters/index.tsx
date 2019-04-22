@@ -1,21 +1,19 @@
 import React, { FC } from 'react';
 
 import CharacterCard from '../../components/CharacterCard';
-import { Game, User, UserId } from '../../models';
+import { ActiveUser, Game, UserId } from '../../models';
 
 interface Props {
-  users: User[];
+  users: ActiveUser[];
   game: Game;
   currentUserId: UserId;
+  isCreator: boolean;
 }
 
-const Characters: FC<Props> = ({users, game}) => {
-  function getGameData(userId: UserId) {
-    return {}
-  }
+const Characters: FC<Props> = ({users, game, isCreator, currentUserId}) => {
   return (
     <div>
-      {users.map(user => <CharacterCard key={user.id} user={user} gameData={getGameData(user.id) as any} />)}
+      {users.map(user => <CharacterCard key={user.id} user={user} isCreator={isCreator} isCharacterOwner={user.id === currentUserId} />)}
     </div>
   )
 }

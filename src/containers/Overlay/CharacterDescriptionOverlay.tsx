@@ -20,6 +20,7 @@ const CharacterDescriptionOverlay: FC<Props> = ({character}) => {
         title={characterTitleMap[character]}
         actions={
           <Button
+            fullWidth
             onClick={() => dispatch(hideOverlay())}
             variant="contained"
             color="primary"

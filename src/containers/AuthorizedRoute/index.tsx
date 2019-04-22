@@ -5,8 +5,6 @@ import { getUser } from '../../services';
 
 const AuthorizedRoute: FC<any> = ({component: RouteComponent, ...rest}) => {
   const user = getUser();
-  console.log(user, history);
-  
   return <Route {...rest} render={() => user ? <RouteComponent /> : < Redirect to="/login"/>}/>
 }
 

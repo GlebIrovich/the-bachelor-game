@@ -1,7 +1,7 @@
 import gql from 'graphql-tag';
 import { OperationVariables } from 'react-apollo';
 
-import { GameData, GameId, Player, User } from '../models';
+import { GameData, GameId, Player, SkillStatus, SkillType, User, UserId } from '../models';
 
 
 export interface SetActiveGameQueryVariables extends OperationVariables {
@@ -91,4 +91,19 @@ export const INSERT_NEW_USER = gql`
     }
   }
 }
+`;
+
+export interface UpdateSkillStatusMutationVariables extends OperationVariables {
+  userId: UserId;
+  skillStatus: SkillStatus;
+}
+
+export const UPDATE_SKILL_STATUS = (skill: SkillType) => gql`
+  mutation updateSkillStatus($userId: uuid!, $skillStatus: String!) {
+    update_players(where: {user_id: {_eq: $userId}}, _set: {${skill}: $skillStatus}) {
+      returning {
+        user_id
+      }
+    }
+  }
 `;
