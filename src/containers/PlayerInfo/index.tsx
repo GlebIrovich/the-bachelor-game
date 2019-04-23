@@ -20,10 +20,18 @@ interface Props {
 
 const PlayerInfo: FC<Props> = ({username, character}) => {
   return (
-    <StyledContainer container>
-      <StyledUsername>{username}</StyledUsername>
-      <Typography>{characterTitleMap[character]}</Typography>
-    </StyledContainer>
+    <React.Fragment>
+      <StyledContainer container>
+        <Grid item>
+          <StyledUsername>{username}</StyledUsername>
+        </Grid>
+      </StyledContainer>
+      <StyledContainer container>
+        <Grid item>
+          <Typography>{characterTitleMap[character]}</Typography>
+        </Grid>
+      </StyledContainer>
+    </React.Fragment>
   )
 }
 

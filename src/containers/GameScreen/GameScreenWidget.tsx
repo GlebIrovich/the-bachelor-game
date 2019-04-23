@@ -1,11 +1,11 @@
 import { BottomNavigation, BottomNavigationAction } from '@material-ui/core';
 import FaceIcon from '@material-ui/icons/FaceRounded';
 import LocationOnIcon from '@material-ui/icons/LocationOn';
-import React, { Component, useState } from 'react';
+import React, { Component } from 'react';
 import SwipeableViews from 'react-swipeable-views';
 import styled from 'styled-components';
 
-import UserAndGame, { Params } from '../../renderProps/UserAndGame';
+import { Params } from '../../renderProps/UserAndGame';
 import BarPage from '../BarPage';
 import Characters from '../Characters';
 import { TabContainer } from './TabContainer';

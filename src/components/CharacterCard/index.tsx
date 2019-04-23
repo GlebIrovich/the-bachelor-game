@@ -1,4 +1,4 @@
-import { Avatar, Grid, Paper, Typography } from '@material-ui/core';
+import { Avatar, Grid, Paper } from '@material-ui/core';
 import React, { FC } from 'react';
 import styled from 'styled-components';
 
@@ -8,6 +8,7 @@ import SkillsContainer from '../../containers/SkillsContainer';
 import { showOverlay } from '../../context/actions';
 import { useOverlayContext } from '../../context/OverlaysContext';
 import { ActiveUser, OverlayKey, SkillType } from '../../models';
+import ScoreWidget from '../ScoreWidget';
 import { ReactComponent as CharAvatar } from './avatars/dummy.svg';
 
 const StyledAvatar = styled(Avatar)`
@@ -45,7 +46,7 @@ const CharacterCard: FC<Props> = ({user, isCreator, isCharacterOwner}) => {
   }
   return (
     <StyledCard>
-      <Grid container wrap="nowrap" spacing={16} alignContent="center">
+      <Grid container wrap="nowrap" spacing={16} alignContent="center" justify="space-between" alignItems="center">
         <Grid item>
           <StyledAvatar
             onClick={() => dispatch(showOverlay(OverlayKey.CHARACTER_DESCRIPTION, {character: user.character}))}
@@ -54,12 +55,11 @@ const CharacterCard: FC<Props> = ({user, isCreator, isCharacterOwner}) => {
           </StyledAvatar>
         </Grid>
         <Grid item xs={8} zeroMinWidth>
-          
           <PlayerInfo username={user.username} character={user.character!} />
           <SkillsContainer user={user} onSkillClick={onSkillClick}/>
         </Grid>
-        <Grid item zeroMinWidth>
-          <Typography align="right">{user.score}</Typography>
+        <Grid item xs={2}>
+          <ScoreWidget userId={user.id} score={user.score} isCreator={isCreator} isCharacterOwner={isCharacterOwner}/>
         </Grid>
       </Grid>
     </StyledCard>

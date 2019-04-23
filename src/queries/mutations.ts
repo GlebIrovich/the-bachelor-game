@@ -139,3 +139,16 @@ export const RESET_BAR_STATUS = gql`
     }
   }
 `;
+
+export interface UpdatePlayerScoreMutationVariables extends OperationVariables {
+  userId: UserId;
+  score: number;
+}
+
+export const UPDATE_PLAYER_SCORE = gql`
+  mutation updatePlayerScore($userId: uuid!, $score: Int!){
+    update_players(where: {user_id: {_eq: $userId}}, _set: {score: $score}) {
+      affected_rows
+    }
+  }
+`;

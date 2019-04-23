@@ -19,7 +19,7 @@ interface State {
 class GameScreen extends Component<{}, State> {
 
   public state: State = {
-    tabIndex: 0,
+    tabIndex: 1,
     swipeDisabled: false,
   }
 
