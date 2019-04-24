@@ -1,5 +1,5 @@
 import { Grid, SvgIcon } from '@material-ui/core';
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import { useMutation } from 'react-apollo-hooks';
 import styled from 'styled-components';
 
@@ -9,7 +9,7 @@ import DownIcon from './icons/DownIcon';
 import UpIcon from './icons/UpIcon';
 
 const StyledScore = styled.span`
-  font-size: 3.3em;
+  font-size: 2em;
   font-weight: 600;
 `;
 
@@ -30,18 +30,26 @@ interface Props {
 
 
 
-const ScoreWidget: FC<Props> = ({score, userId, isCharacterOwner, isCreator}) => {
-  const setScore = useMutation<any, UpdatePlayerScoreMutationVariables>(UPDATE_PLAYER_SCORE)
+function ScoreWidget({score, userId, isCharacterOwner, isCreator}: Props) {
+  const mutateScore = useMutation<any, UpdatePlayerScoreMutationVariables>(UPDATE_PLAYER_SCORE);
+  const [localScore, setScore] = useState(score);
+
+  function updateScore() {
+    const updatedScore = localScore + 1;
+    setScore(updatedScore);
+    mutateScore({variables: {userId, score: updatedScore}});
+  }
+
   return (
     <StyledGridColumn container direction="column" alignItems="center" justify="space-between">
       {
         (isCreator || isCharacterOwner)
-          && <StyledSvgIcon onClick={() => setScore({variables: {userId, score: score + 1}})}><UpIcon /></StyledSvgIcon>
+          && <StyledSvgIcon onClick={updateScore}><UpIcon /></StyledSvgIcon>
       }
-      <StyledScore>{score}</StyledScore>
+      <StyledScore>{localScore}</StyledScore>
       {
         (isCreator || isCharacterOwner)
-          && <StyledSvgIcon onClick={() => setScore({variables: {userId, score: score - 1}})}><DownIcon /></StyledSvgIcon>
+          && <StyledSvgIcon onClick={updateScore}><DownIcon /></StyledSvgIcon>
       }
     </StyledGridColumn>
   )

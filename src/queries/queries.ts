@@ -108,7 +108,7 @@ export interface GetActiveUsersData {
 
 export const GET_ACTIVE_USERS = gql`
   query getUser($gameId: uuid!){
-    players(where: {game_id: {_eq: $gameId}}) {
+    players(where: {game_id: {_eq: $gameId}}, order_by: {score: desc}) {
       user_id
       artefact
       attack

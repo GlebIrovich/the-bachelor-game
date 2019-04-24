@@ -20,10 +20,13 @@ const StyledToolbar = styled(Toolbar)`
 `;
 
 const StyledAppBar = styled(AppBar)`
-  position: relative !important;
 `;
 
-const Navbar: FC<RouteComponentProps> = ({history}) => {
+interface Props {
+  gameName: string;
+}
+
+const Navbar: FC<RouteComponentProps & Props> = ({history, gameName}) => {
   const [open, toggleOpen] = React.useState(false);
   const elementRef = React.useRef(null);
 
@@ -38,7 +41,7 @@ const Navbar: FC<RouteComponentProps> = ({history}) => {
     <StyledAppBar position="static">
       <StyledToolbar>
         <Typography variant="h6" color="inherit">
-          Kekopolia
+          {gameName}
         </Typography>
         <div>
           <IconButton
@@ -60,7 +63,6 @@ const Navbar: FC<RouteComponentProps> = ({history}) => {
                   <Paper>
                     <ClickAwayListener onClickAway={handleClose}>
                       <MenuList>
-                        <MenuItem onClick={handleClose}>Аккаунт</MenuItem>
                         <MenuItem onClick={() => history.push('/')}>Выход</MenuItem>
                       </MenuList>
                     </ClickAwayListener>

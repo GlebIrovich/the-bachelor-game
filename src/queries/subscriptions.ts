@@ -12,7 +12,7 @@ export interface SubscribeToPlayersData {
 
 export const PLAYERS_SUBSCRIPTION = gql`
   subscription onPlayersChanged($gameId: uuid!) {
-    players(where: {game_id: {_eq: $gameId}}) {
+    players(where: {game_id: {_eq: $gameId}}, order_by: {score: desc}) {
       user_id
       artefact
       attack

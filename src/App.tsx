@@ -1,10 +1,10 @@
-import './App.css';
-
+import { MuiThemeProvider } from '@material-ui/core/styles';
 import React, { ComponentType } from 'react';
 import { HashRouter } from 'react-router-dom';
 
 import Confetti from './components/Confetti';
 import { BASE_URL } from './config';
+import { theme } from './constants';
 import CharacterDescriptionOverlay from './containers/Overlay/CharacterDescriptionOverlay';
 import GameCompletedOverlay from './containers/Overlay/GameCompletedOverlay';
 import JoinGameOverlay from './containers/Overlay/JoinGameOverlay';
@@ -35,13 +35,15 @@ const App = () => {
   const OverlayComponent = overlay && overlayMap[overlay];
   return (
     <HashRouter basename={BASE_URL}>
-      <Routes />
-      {
-        OverlayComponent && <OverlayComponent {...props}/>
-      }
-      {
-        overlay === OverlayKey.GAME_COMPLETED ? <Confetti /> : undefined
-      }
+      <MuiThemeProvider theme={theme}>
+        <Routes />
+        {
+          OverlayComponent && <OverlayComponent {...props}/>
+        }
+        {
+          overlay === OverlayKey.GAME_COMPLETED ? <Confetti /> : undefined
+        }
+      </MuiThemeProvider>
     </HashRouter>
   )
 }

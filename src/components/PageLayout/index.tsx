@@ -2,10 +2,14 @@ import React, { FC } from 'react';
 
 import Navbar from '../Navbar';
 
-const PageLayout: FC = ({children}) => {
+interface Props {
+  gameName: string;
+}
+
+const PageLayout: FC<Props> = ({children, gameName}) => {
   return (
     <div>
-      <Navbar />
+      <Navbar gameName={gameName} />
       {children}
     </div>
   )
