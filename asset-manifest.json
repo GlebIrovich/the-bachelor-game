@@ -1,15 +1,18 @@
 {
-  "main.css": "/the-bachelor-game/static/css/main.74f53913.chunk.css",
-  "main.js": "/the-bachelor-game/static/js/main.038beade.chunk.js",
-  "main.js.map": "/the-bachelor-game/static/js/main.038beade.chunk.js.map",
+  "main.css": "/the-bachelor-game/static/css/main.c8d17b82.chunk.css",
+  "main.js": "/the-bachelor-game/static/js/main.d7890083.chunk.js",
+  "main.js.map": "/the-bachelor-game/static/js/main.d7890083.chunk.js.map",
   "runtime~main.js": "/the-bachelor-game/static/js/runtime~main.eb66bfe3.js",
   "runtime~main.js.map": "/the-bachelor-game/static/js/runtime~main.eb66bfe3.js.map",
-  "static/js/2.d0e9f61f.chunk.js": "/the-bachelor-game/static/js/2.d0e9f61f.chunk.js",
-  "static/js/2.d0e9f61f.chunk.js.map": "/the-bachelor-game/static/js/2.d0e9f61f.chunk.js.map",
+  "static/js/2.ccb85ec6.chunk.js": "/the-bachelor-game/static/js/2.ccb85ec6.chunk.js",
+  "static/js/2.ccb85ec6.chunk.js.map": "/the-bachelor-game/static/js/2.ccb85ec6.chunk.js.map",
   "index.html": "/the-bachelor-game/index.html",
-  "precache-manifest.e6f54c8966da09e441d2f79db214512d.js": "/the-bachelor-game/precache-manifest.e6f54c8966da09e441d2f79db214512d.js",
+  "precache-manifest.beecfa7f3f59ebe976558099925fefc4.js": "/the-bachelor-game/precache-manifest.beecfa7f3f59ebe976558099925fefc4.js",
   "service-worker.js": "/the-bachelor-game/service-worker.js",
-  "static/css/main.74f53913.chunk.css.map": "/the-bachelor-game/static/css/main.74f53913.chunk.css.map",
+  "static/css/main.c8d17b82.chunk.css.map": "/the-bachelor-game/static/css/main.c8d17b82.chunk.css.map",
   "static/media/beer.svg": "/the-bachelor-game/static/media/beer.15789e59.svg",
-  "static/media/dummy.e95c9f5b.svg": "/the-bachelor-game/static/media/dummy.e95c9f5b.svg"
+  "static/media/crown.svg": "/the-bachelor-game/static/media/crown.369e1497.svg",
+  "static/media/dummy.e95c9f5b.svg": "/the-bachelor-game/static/media/dummy.e95c9f5b.svg",
+  "static/media/shield.svg": "/the-bachelor-game/static/media/shield.69004f07.svg",
+  "static/media/swords.svg": "/the-bachelor-game/static/media/swords.8e86853c.svg"
 }
