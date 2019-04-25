@@ -5,6 +5,7 @@ import React, { Component } from 'react';
 import SwipeableViews from 'react-swipeable-views';
 import styled from 'styled-components';
 
+import { EGG_SHELL } from '../../constants';
 import { Params } from '../../renderProps/UserAndGame';
 import BarPage from '../BarPage';
 import Characters from '../Characters';
@@ -14,6 +15,7 @@ const StyledBottomNavigation = styled(BottomNavigation)`
   position: absolute;
   width: 100%;
   bottom: 0;
+  background-color: ${EGG_SHELL} !important;
 `;
 
 interface Props extends Params {
@@ -41,9 +43,7 @@ class GameScreenWidget extends Component<Props, {}> {
           onChangeIndex={handleTabIndexChange}
         >
           <BarPage disableTabSwipe={disableTabSwipe} game={rest.game} isCreator={rest.game.creator === rest.currentUserId}/>
-          <TabContainer tabCount={3}>
-            <Characters {...rest} isCreator={isCreator}/>
-          </TabContainer>
+          <Characters {...rest} isCreator={isCreator}/>
           <TabContainer tabCount={3}>Item Three</TabContainer>
         </SwipeableViews>
         <StyledBottomNavigation
@@ -53,8 +53,6 @@ class GameScreenWidget extends Component<Props, {}> {
         >
           <BottomNavigationAction label="Карта" icon={<LocationOnIcon />} />
           <BottomNavigationAction label="Герои" icon={<FaceIcon /> } />
-          <BottomNavigationAction label="Nearby" icon={<LocationOnIcon />} />
-  
         </StyledBottomNavigation>
       </React.Fragment>
     )

@@ -31,14 +31,14 @@ const overlayMap: OverlayMapping = {
 }
 
 const App = () => {
-  const [{overlay, props}] = useOverlayContext()
+  const [{ overlay, props }] = useOverlayContext()
   const OverlayComponent = overlay && overlayMap[overlay];
   return (
     <HashRouter basename={BASE_URL}>
       <MuiThemeProvider theme={theme}>
         <Routes />
         {
-          OverlayComponent && <OverlayComponent {...props}/>
+          OverlayComponent && <OverlayComponent {...props} />
         }
         {
           overlay === OverlayKey.GAME_COMPLETED ? <Confetti /> : undefined

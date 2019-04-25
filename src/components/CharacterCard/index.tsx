@@ -2,6 +2,7 @@ import { Avatar, Grid, Paper } from '@material-ui/core';
 import React, { FC } from 'react';
 import styled from 'styled-components';
 
+import { ISABELLINE } from '../../constants';
 import { SkillOverlayProps } from '../../containers/Overlay/SkillOverlay';
 import PlayerInfo from '../../containers/PlayerInfo';
 import SkillsContainer from '../../containers/SkillsContainer';
@@ -16,6 +17,10 @@ const StyledAvatar = styled(Avatar)`
   width: 4em !important;
   height: 4em !important;
   cursor: pointer;
+  transition: all 300ms;
+  &:hover {
+    filter: brightness(105%);
+  }
 `;
 
 const StyledCard = styled(Paper)`
@@ -23,6 +28,9 @@ const StyledCard = styled(Paper)`
   padding: 0 1em;
   min-height: 5.5em;
   margin: 1.5em auto;
+  border-top-left-radius: 20px !important;
+  border-bottom-left-radius: 50px !important;
+  background-color: ${ISABELLINE} !important;
 `;
 
 interface Props {
@@ -31,7 +39,7 @@ interface Props {
   isCharacterOwner: boolean;
 }
 
-const CharacterCard: FC<Props> = ({user, isCreator, isCharacterOwner}) => {
+const CharacterCard: FC<Props> = ({ user, isCreator, isCharacterOwner }) => {
   const [, dispatch] = useOverlayContext();
   function onSkillClick(skillType: SkillType) {
     const overlayProps: SkillOverlayProps = {
@@ -49,17 +57,17 @@ const CharacterCard: FC<Props> = ({user, isCreator, isCharacterOwner}) => {
       <Grid container wrap="nowrap" spacing={16} alignContent="center" justify="space-between" alignItems="center">
         <Grid item>
           <StyledAvatar
-            onClick={() => dispatch(showOverlay(OverlayKey.CHARACTER_DESCRIPTION, {character: user.character}))}
+            onClick={() => dispatch(showOverlay(OverlayKey.CHARACTER_DESCRIPTION, { character: user.character }))}
           >
             <CharAvatar />
           </StyledAvatar>
         </Grid>
         <Grid item xs={8} zeroMinWidth>
           <PlayerInfo username={user.username} character={user.character!} />
-          <SkillsContainer user={user} onSkillClick={onSkillClick}/>
+          <SkillsContainer user={user} onSkillClick={onSkillClick} />
         </Grid>
-        <Grid item xs={2}>
-          <ScoreWidget userId={user.id} score={user.score} isCreator={isCreator} isCharacterOwner={isCharacterOwner}/>
+        <Grid item xs={3}>
+          <ScoreWidget userId={user.id} score={user.score} isCreator={isCreator} isCharacterOwner={isCharacterOwner} />
         </Grid>
       </Grid>
     </StyledCard>

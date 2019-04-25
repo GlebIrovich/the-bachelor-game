@@ -36,20 +36,20 @@ interface Props {
   children: (props: Params) => React.ReactNode;
 }
 
-class GameQuery extends Query<GetGameByIdData, GetGameByIdQueryVariables>{}
-class UsersQuery extends Query<GetActiveUsersData, GetActiveUsersQueryVariables>{}
+class GameQuery extends Query<GetGameByIdData, GetGameByIdQueryVariables>{ }
+class UsersQuery extends Query<GetActiveUsersData, GetActiveUsersQueryVariables>{ }
 
 export default class UserAndGame extends Component<Props> {
 
   render() {
     const user = getUser()!;
     return (
-      <GameQuery query={GET_GAME_BY_ID} variables={{gameId: user.active_game}}>
+      <GameQuery query={GET_GAME_BY_ID} variables={{ gameId: user.active_game }}>
         {
-          ({data: gameData, loading, subscribeToMore: subscribeToMoreGame}) => !loading && gameData ? (
-            <UsersQuery query={GET_ACTIVE_USERS} variables={{gameId: gameData.games[0].id }} >
+          ({ data: gameData, loading, subscribeToMore: subscribeToMoreGame }) => !loading && gameData ? (
+            <UsersQuery query={GET_ACTIVE_USERS} variables={{ gameId: gameData.games[0].id }} >
               {
-                ({data: usersData, loading: usersLoading, subscribeToMore: subscribeToMorePlayers}) => {
+                ({ data: usersData, loading: usersLoading, subscribeToMore: subscribeToMorePlayers }) => {
                   if (!usersLoading && usersData) {
                     return (
                       <PageLayout gameName={gameData.games[0].title}>
@@ -60,27 +60,28 @@ export default class UserAndGame extends Component<Props> {
                             game: gameData.games[0],
                             subscribeToGame: () => subscribeToMoreGame({
                               document: GAME_SUBSCRIPTION,
-                              variables: {gameId: gameData.games[0].id },
-                              updateQuery: (prev, {subscriptionData: {data}}) => {
+                              variables: { gameId: gameData.games[0].id },
+                              updateQuery: (prev, { subscriptionData: { data } }) => {
                                 return data || prev;
                               },
                             }),
                             subscribeToPlayers: () => subscribeToMorePlayers({
                               document: PLAYERS_SUBSCRIPTION,
-                              variables: {gameId: gameData.games[0].id },
-                              updateQuery: (prev, {subscriptionData: {data}}) => {
+                              variables: { gameId: gameData.games[0].id },
+                              updateQuery: (prev, { subscriptionData: { data } }) => {
                                 return data || prev;
                               },
                             })
                           })
                         }
-                    </PageLayout>
-                  )}
-                  return <StyledLoadingContainer><CircularProgress/></StyledLoadingContainer>;
+                      </PageLayout>
+                    )
+                  }
+                  return <StyledLoadingContainer><CircularProgress /></StyledLoadingContainer>;
                 }
               }
             </UsersQuery>
-          ) : <StyledLoadingContainer><CircularProgress/></StyledLoadingContainer>
+          ) : <StyledLoadingContainer><CircularProgress /></StyledLoadingContainer>
         }
       </GameQuery>
     )

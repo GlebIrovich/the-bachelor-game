@@ -5,7 +5,7 @@ import { Query } from 'react-apollo';
 import { RouteComponentProps, withRouter } from 'react-router';
 import styled from 'styled-components';
 
-import { IVORY_WHITE, PRIMARY_DARK, WHITE } from '../../constants';
+import { ISABELLINE } from '../../constants';
 import { showOverlay } from '../../context/actions';
 import { useOverlayContext } from '../../context/OverlaysContext';
 import { Game, OverlayKey } from '../../models';
@@ -21,20 +21,18 @@ const StyledButton = styled(Button)`
 `;
 
 const StyledMenuContainer = styled.div`
-  border: solid 4px ${WHITE};
   text-transform: uppercase; 
-  margin: 10em auto;
-  border-radius: 10px;
-  width: 18em;
-  padding: 0.7em;
+  display: flex;
+  height: 100vh;
+  justify-content: center;
 `;
 
 const StyledMenuCard = styled(Grid)`
-  /* background-color: ${PRIMARY_DARK}; */
+  margin-top: 16em;
   border-radius: 10px;
   height: 100%;
+  width: 16em !important;
   height: 20em;
-  padding: 0.7em;
   text-align: center;
 `;
 
@@ -42,10 +40,10 @@ const StyledButtonContainer = styled(Grid)`
 `;
 
 const StyledTitle = styled.h1`
-  color: ${IVORY_WHITE};
+  color: ${ISABELLINE};
   margin: 0;
-  font-size: 3em;
-  font-family: 'Amatic SC', cursive;
+  font-size: 2.7em;
+  font-family: 'Ruslan Display', cursive;
 `;
 
 interface Props {
@@ -73,11 +71,10 @@ const Main: FC<RouteComponentProps & Props> = ({history, loginRequired}) => {
   }
   
   return (
-    <div>
       <StyledMenuContainer>
         <StyledMenuCard container direction="column" justify="space-between">
           <StyledTitle>
-            Приветствую Алко-Герой
+            Привет Алко Герой
           </StyledTitle>
           <StyledButtonContainer item>
             <GameQuery query={GET_GAME_BY_ID} variables={{gameId: user && user.active_game}}>
@@ -95,11 +92,11 @@ const Main: FC<RouteComponentProps & Props> = ({history, loginRequired}) => {
                     </StyledButton>
                     <StyledButton
                       fullWidth
-                      onClick={() => dispatch(showOverlay(OverlayKey.LOGIN))}
+                      onClick={() => dispatch(showOverlay(OverlayKey.SIGN_UP))}
                       variant="contained"
                       color="secondary"
                     >
-                      Новая игра
+                      Зарегестрироваться
                     </StyledButton>
                   </React.Fragment>
                 )
@@ -108,7 +105,6 @@ const Main: FC<RouteComponentProps & Props> = ({history, loginRequired}) => {
           </StyledButtonContainer>
         </StyledMenuCard>
       </StyledMenuContainer>
-    </div>
   );
 }
 

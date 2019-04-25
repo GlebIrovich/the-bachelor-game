@@ -1,5 +1,5 @@
 import { Grid, SvgIcon } from '@material-ui/core';
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { useMutation } from 'react-apollo-hooks';
 import styled from 'styled-components';
 
@@ -9,7 +9,7 @@ import DownIcon from './icons/DownIcon';
 import UpIcon from './icons/UpIcon';
 
 const StyledScore = styled.span`
-  font-size: 2em;
+  font-size: 1.6em;
   font-weight: 600;
 `;
 
@@ -30,26 +30,44 @@ interface Props {
 
 
 
-function ScoreWidget({score, userId, isCharacterOwner, isCreator}: Props) {
+function ScoreWidget({ score, userId, isCharacterOwner, isCreator }: Props) {
+  const [useLocalScore, switchScoreDisplayMode] = useState(false);
+  const [timeout, resetTimeOut] = useState();
   const mutateScore = useMutation<any, UpdatePlayerScoreMutationVariables>(UPDATE_PLAYER_SCORE);
   const [localScore, setScore] = useState(score);
 
-  function updateScore() {
+  function increment() {
+    switchScoreDisplayMode(true);
     const updatedScore = localScore + 1;
     setScore(updatedScore);
-    mutateScore({variables: {userId, score: updatedScore}});
+    mutateScore({ variables: { userId, score: updatedScore } });
+    if (timeout) {
+      clearTimeout(timeout);
+    }
+    resetTimeOut(setTimeout(() => switchScoreDisplayMode(false), 5000))
+  }
+
+  function decrement() {
+    switchScoreDisplayMode(true);
+    const updatedScore = localScore - 1;
+    setScore(updatedScore);
+    mutateScore({ variables: { userId, score: updatedScore } });
+    if (timeout) {
+      clearTimeout(timeout);
+    }
+    resetTimeOut(setTimeout(() => switchScoreDisplayMode(false), 5000))
   }
 
   return (
     <StyledGridColumn container direction="column" alignItems="center" justify="space-between">
       {
         (isCreator || isCharacterOwner)
-          && <StyledSvgIcon onClick={updateScore}><UpIcon /></StyledSvgIcon>
+        && <StyledSvgIcon onClick={increment}><UpIcon /></StyledSvgIcon>
       }
-      <StyledScore>{localScore}</StyledScore>
+      <StyledScore>{useLocalScore ? localScore : score}</StyledScore>
       {
         (isCreator || isCharacterOwner)
-          && <StyledSvgIcon onClick={updateScore}><DownIcon /></StyledSvgIcon>
+        && <StyledSvgIcon onClick={decrement}><DownIcon /></StyledSvgIcon>
       }
     </StyledGridColumn>
   )

@@ -114,7 +114,7 @@ export interface ResetSkillsStatusMutationVariables extends OperationVariables {
 
 export const RESET_SKILLS_STATUS = gql`
   mutation updateSkills($gameId: uuid!) {
-    update_players(where: {game_id: {_eq: $gameId}}, _set: {attack: "ready", defence: "ready"}) {
+    update_players(where: {game_id: {_eq: $gameId}}, _set: {attack: "ready", defence: "ready", artefact: "ready"}) {
       affected_rows
     }
   }

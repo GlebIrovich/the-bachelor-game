@@ -6,7 +6,7 @@ import { useOverlayContext } from '../../context/OverlaysContext';
 
 const StyledOverlay = styled.div`
   position: absolute;
-  top: 35%;
+  top: 20%;
   width: 100%;
   margin: 0 auto;
 `;

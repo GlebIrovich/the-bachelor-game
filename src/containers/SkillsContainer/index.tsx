@@ -4,9 +4,16 @@ import styled from 'styled-components';
 
 import SkillIcon from '../../components/SkillIcon';
 import { ActiveUser, SkillType } from '../../models';
+import artefactIcon from './icons/crown.svg';
+import defenceIcon from './icons/shield.svg';
+import attackIcon from './icons/swords.svg';
 
 const StyledContainer = styled(Grid)`
   margin-top: 1em;
+`;
+
+const StyledSvgIcon = styled.img`
+  width: 1.1em !important;
 `;
 
 interface Props {
@@ -14,17 +21,17 @@ interface Props {
   onSkillClick: (skillType: SkillType) => void;
 }
 
-const SkillsContainer: FC<Props> = ({user, onSkillClick}) => {
+const SkillsContainer: FC<Props> = ({ user, onSkillClick }) => {
   return (
     <StyledContainer container>
       <SkillIcon onClick={() => onSkillClick(SkillType.ATTACK)} skillStatus={user.attack}>
-        A
+        <StyledSvgIcon src={attackIcon} />
       </SkillIcon>
       <SkillIcon onClick={() => onSkillClick(SkillType.DEFENCE)} skillStatus={user.defence}>
-        B
+        <StyledSvgIcon src={defenceIcon} />
       </SkillIcon>
       <SkillIcon onClick={() => onSkillClick(SkillType.ARTEFACT)} skillStatus={user.artefact}>
-        C
+        <StyledSvgIcon src={artefactIcon} />
       </SkillIcon>
     </StyledContainer>
   )

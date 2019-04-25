@@ -1,4 +1,4 @@
-import { Button, Step, StepContent, StepLabel, Stepper, Typography } from '@material-ui/core';
+import { Button, Grid, Step, StepContent, StepLabel, Stepper, Typography } from '@material-ui/core';
 import React, { FC, useEffect } from 'react';
 import { useMutation } from 'react-apollo-hooks';
 import styled from 'styled-components';
@@ -23,9 +23,13 @@ interface StyledContainerProps {
 
 const StepContainer = styled.div`
   overflow: auto;
-  height: ${({height}: StyledContainerProps) => height}px;
+  height: ${({ height }: StyledContainerProps) => height}px;
   padding: 0 2em;
   margin-top: 1em;
+`;
+
+const StyledButton = styled(Button)`
+  margin-top: 0.5em !important;
 `;
 
 const StyledBarAddress = styled(Typography)`
@@ -43,8 +47,7 @@ interface Props {
   gameId: GameId;
 }
 
-const BarStepsWidget: FC<Props> = ({bars, isCreator, gameId}) => {
-  const [activeStep, setActiveStep] = React.useState(0);
+const BarStepsWidget: FC<Props> = ({ bars, isCreator, gameId }) => {
   const [containerHeight, setHeight] = React.useState(calculateContainerHeight());
   const resetBarStatus = useMutation(RESET_BAR_STATUS);
   const updateBarStatus = useMutation<{}, UpdateBarStatusMutationVariables>(UPDATE_BAR_STATUS);
@@ -52,23 +55,15 @@ const BarStepsWidget: FC<Props> = ({bars, isCreator, gameId}) => {
 
   const updateBar = (barId: string) => {
     resetBarStatus()
-      .then(data =>  {
-        updateBarStatus({variables: {barId}})
-        resetSkillsStatus({variables: {gameId}});
+      .then(() => {
+        updateBarStatus({ variables: { barId } })
+        resetSkillsStatus({ variables: { gameId } });
       })
   }
   const [, dispatch] = useOverlayContext()
   useEffect(() => {
     window.addEventListener('resize', () => setHeight(calculateContainerHeight()))
   })
-
-  function handleNext() {
-    setActiveStep(prevActiveStep => prevActiveStep + 1);
-  }
-
-  function handleBack() {
-    setActiveStep(prevActiveStep => prevActiveStep - 1);
-  }
 
   function handleWin() {
     return dispatch(showOverlay(OverlayKey.GAME_COMPLETED))
@@ -81,28 +76,36 @@ const BarStepsWidget: FC<Props> = ({bars, isCreator, gameId}) => {
     <StepContainer height={containerHeight}>
       <Stepper activeStep={activeBarIndex} orientation="vertical">
         {
-          bars.map(({title, id, address}, index) => (
+          bars.map(({ title, id, address }, index) => (
             <Step key={id}>
               <StepLabel>{title}</StepLabel>
-                <StepContent>
-                  <StyledBarAddress>{address}</StyledBarAddress>
-                  {
-                    index > 0 && isCreator && (
-                      <Button onClick={index > 0 ? () => updateBar(bars[index - 1].id) : undefined}>
-                        Назад
-                      </Button>
-                    )
-                  }
+              <StepContent>
+                <StyledBarAddress>{address}</StyledBarAddress>
+                <Grid container justify="space-between" direction="column">
                   <Button
+                    fullWidth
                     variant="contained"
                     color="primary"
                     onClick={index === bars.length - 1 ? handleWin : () => updateBar(bars[index + 1].id)}
                   >
                     {index === bars.length - 1 ? 'Все!' : 'Дальше!'}
                   </Button>
-                </StepContent>
-              </Step>
-            ))
+                  {
+                    index > 0 && isCreator && (
+                      <StyledButton
+                        fullWidth
+                        variant="outlined"
+                        color="default"
+                        onClick={index > 0 ? () => updateBar(bars[index - 1].id) : undefined}
+                      >
+                        Назад
+                      </StyledButton>
+                    )
+                  }
+                </Grid>
+              </StepContent>
+            </Step>
+          ))
         }
       </Stepper>
     </StepContainer>
