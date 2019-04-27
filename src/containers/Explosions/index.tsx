@@ -12,8 +12,7 @@ import Explosion9 from 'react-explode/Explosion9';
 import styled from 'styled-components';
 
 import { hideEffect, useEffectsContext } from '../../context/specialEffects';
-
-const EXPLOSION_SIZE = 450;
+import { useWindowSize } from '../../helpers/useWindowSize';
 
 const explosionList: Array<ComponentType<any>> = [
   Explosion1,
@@ -52,10 +51,11 @@ const StyledContainer = styled.div`
 const ExplodeEffect = React.memo(() => {
   const [, dispatch] = useEffectsContext();
   const Explosion = randomExplosion();
+  const { width } = useWindowSize();
   return (
     <StyledContainer>
       <Explosion
-        size={EXPLOSION_SIZE}
+        size={width}
         delay={0.2}
         repeatDelay={0.1}
         repeat={1}
