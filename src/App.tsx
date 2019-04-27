@@ -13,8 +13,9 @@ import SelectCharacterOverlay from './containers/Overlay/SelectCharacterOverlay'
 import SignUpOverlay from './containers/Overlay/SignUpOverlay';
 import SkillOverlay from './containers/Overlay/SkillOverlay';
 import Routes from './containers/Routes';
-import { useOverlayContext } from './context/OverlaysContext';
+
 import { OverlayKey } from './models/overlays';
+import { useOverlayContext } from './context';
 
 interface OverlayMapping {
   [overlayKey: string]: ComponentType<any>;
@@ -28,24 +29,20 @@ const overlayMap: OverlayMapping = {
   [OverlayKey.SIGN_UP]: SignUpOverlay,
   [OverlayKey.CHARACTER_DESCRIPTION]: CharacterDescriptionOverlay,
   [OverlayKey.SKILL_DESCRIPTION]: SkillOverlay,
-}
+};
 
 const App = () => {
-  const [{ overlay, props }] = useOverlayContext()
+  const [{ overlay, props }] = useOverlayContext();
   const OverlayComponent = overlay && overlayMap[overlay];
   return (
     <HashRouter basename={BASE_URL}>
       <MuiThemeProvider theme={theme}>
         <Routes />
-        {
-          OverlayComponent && <OverlayComponent {...props} />
-        }
-        {
-          overlay === OverlayKey.GAME_COMPLETED ? <Confetti /> : undefined
-        }
+        {OverlayComponent && <OverlayComponent {...props} />}
+        {overlay === OverlayKey.GAME_COMPLETED ? <Confetti /> : undefined}
       </MuiThemeProvider>
     </HashRouter>
-  )
-}
+  );
+};
 
 export default App;

@@ -1,4 +1,4 @@
-import { GenericAction, OverlayProps } from './common';
+import { ActionProps, GenericAction } from './common';
 
 export enum OverlayKey {
   GAME_COMPLETED = 'gameCompleted',
@@ -12,12 +12,15 @@ export enum OverlayKey {
 
 export interface OverlayContextState {
   overlay?: OverlayKey;
-  props?: OverlayProps;
+  props?: ActionProps;
 }
 
 export enum OverlayActionType {
   SHOW = 'show',
-  HIDE = 'hide'
+  HIDE = 'hide',
 }
 
-export type Action = GenericAction<OverlayActionType, OverlayKey | undefined>;
+export type OverlayContextAction = GenericAction<
+  OverlayActionType,
+  OverlayKey | undefined
+>;

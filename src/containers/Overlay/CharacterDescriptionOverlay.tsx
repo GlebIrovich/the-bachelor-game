@@ -2,16 +2,20 @@ import { Button, Typography } from '@material-ui/core';
 import React, { FC } from 'react';
 
 import Overlay from '.';
-import { hideOverlay } from '../../context/actions';
-import { useOverlayContext } from '../../context/OverlaysContext';
-import { characterDescriptionMap, characterTitleMap, CharacterType } from '../../models';
+import { hideOverlay } from '../../context/overlays/actions';
+import { useOverlayContext } from '../../context/overlays/OverlaysContext';
+import {
+  characterDescriptionMap,
+  characterTitleMap,
+  CharacterType,
+} from '../../models';
 import OverlayWidget from './OverlayWidget';
 
 interface Props {
   character: CharacterType;
 }
 
-const CharacterDescriptionOverlay: FC<Props> = ({character}) => {
+const CharacterDescriptionOverlay: FC<Props> = ({ character }) => {
   const [_state, dispatch] = useOverlayContext();
   return (
     <Overlay>
@@ -28,14 +32,10 @@ const CharacterDescriptionOverlay: FC<Props> = ({character}) => {
             Ок
           </Button>
         }
-        content={
-          <Typography>
-            {characterDescriptionMap[character]}
-          </Typography>
-        }
+        content={<Typography>{characterDescriptionMap[character]}</Typography>}
       />
     </Overlay>
-  )
-}
+  );
+};
 
-export default CharacterDescriptionOverlay
+export default CharacterDescriptionOverlay;

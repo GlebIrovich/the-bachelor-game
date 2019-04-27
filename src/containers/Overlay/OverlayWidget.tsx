@@ -2,11 +2,10 @@ import { Button, Grid, Paper, Typography } from '@material-ui/core';
 import React, { FC, ReactNode } from 'react';
 import styled from 'styled-components';
 
-import { hideOverlay } from '../../context/actions';
-import { useOverlayContext } from '../../context/OverlaysContext';
+import { hideOverlay } from '../../context/overlays/actions';
+import { useOverlayContext } from '../../context/overlays/OverlaysContext';
 
 const StyledOverlay = styled(Paper)`
-  width: 100%;
   padding: 1em;
   margin: 0 auto;
 `;
@@ -42,7 +41,15 @@ interface Props {
   hideCancelAction?: boolean;
 }
 
-const OverlayWidget: FC<Props> = ({title, actions, message, content, onCancel, secondaryActions, hideCancelAction}) => {
+const OverlayWidget: FC<Props> = ({
+  title,
+  actions,
+  message,
+  content,
+  onCancel,
+  secondaryActions,
+  hideCancelAction,
+}) => {
   const [, dispatch] = useOverlayContext();
   function handleCancel() {
     if (onCancel) onCancel();
@@ -53,7 +60,7 @@ const OverlayWidget: FC<Props> = ({title, actions, message, content, onCancel, s
       <Grid container>
         <Grid item>
           <Title>{title}</Title>
-          { message && <Message>{message}</Message>}
+          {message && <Message>{message}</Message>}
         </Grid>
         <Grid item xs={12}>
           {content}
@@ -64,14 +71,19 @@ const OverlayWidget: FC<Props> = ({title, actions, message, content, onCancel, s
           {actions}
           {secondaryActions}
           {!hideCancelAction && (
-            <StyledCancelButton color="secondary" variant="outlined" onClick={handleCancel} fullWidth>
+            <StyledCancelButton
+              color="secondary"
+              variant="outlined"
+              onClick={handleCancel}
+              fullWidth
+            >
               Отмена
             </StyledCancelButton>
           )}
         </StyledActionContainer>
       </Grid>
     </StyledOverlay>
-  )
-}
+  );
+};
 
-export default OverlayWidget
+export default OverlayWidget;

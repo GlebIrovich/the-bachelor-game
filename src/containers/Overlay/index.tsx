@@ -1,8 +1,8 @@
 import React, { FC, ReactNode, useEffect } from 'react';
 import styled from 'styled-components';
 
-import { hideOverlay } from '../../context/actions';
-import { useOverlayContext } from '../../context/OverlaysContext';
+import { hideOverlay } from '../../context/overlays/actions';
+import { useOverlayContext } from '../../context/overlays/OverlaysContext';
 
 const overlayWidth = '20em';
 
@@ -24,25 +24,23 @@ const Background = styled.div`
 
 const Escape = 'Escape';
 
-const Overlay: FC = ({children}) => {
-  const [_state, dispatch] = useOverlayContext()
+const Overlay: FC = ({ children }) => {
+  const [_state, dispatch] = useOverlayContext();
   const handleKeyDown = (e: KeyboardEvent) => {
     if (e.key === Escape) {
       dispatch(hideOverlay());
     }
-  }
+  };
   useEffect(() => {
-    window.addEventListener('keydown', handleKeyDown)
-  })
+    window.addEventListener('keydown', handleKeyDown);
+  });
 
   return (
     <React.Fragment>
-      <Background onClick={() => dispatch(hideOverlay())}/>
-      <StyledOverlay>
-        {children}
-      </StyledOverlay>
+      <Background onClick={() => dispatch(hideOverlay())} />
+      <StyledOverlay>{children}</StyledOverlay>
     </React.Fragment>
-  )
-}
+  );
+};
 
-export default Overlay
+export default Overlay;

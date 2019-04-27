@@ -6,9 +6,15 @@ import { RouteComponentProps, withRouter } from 'react-router';
 import styled from 'styled-components';
 
 import Overlay from '.';
-import { hideOverlay } from '../../context/actions';
-import { useOverlayContext } from '../../context/OverlaysContext';
-import { characterList, characterTitleMap, CharacterType, Game, User } from '../../models';
+import { hideOverlay } from '../../context/overlays/actions';
+import { useOverlayContext } from '../../context/overlays/OverlaysContext';
+import {
+  characterList,
+  characterTitleMap,
+  CharacterType,
+  Game,
+  User,
+} from '../../models';
 import {
   GET_ACTIVE_USERS,
   GET_GAME_BY_ID,
@@ -25,7 +31,9 @@ const StyledProgress = styled(CircularProgress)`
   margin-right: 0.5em !important;
 `;
 
-const SelectCharacterOverlay: FC<RouteComponentProps & WithApolloClient<{}>> = ({history, client}) => {
+const SelectCharacterOverlay: FC<
+  RouteComponentProps & WithApolloClient<{}>
+> = ({ history, client }) => {
   const [_state, dispatch] = useOverlayContext();
   const [character, selectCharacter] = useState<CharacterType | undefined>();
   const user = getUser()!;
@@ -34,23 +42,44 @@ const SelectCharacterOverlay: FC<RouteComponentProps & WithApolloClient<{}>> = (
     selectCharacter(event.target.value as any);
   }
 
-  const {data, error, loading} = useQuery<{users: Array<User>}, GetActiveUsersQueryVariables>(GET_ACTIVE_USERS, {variables: {gameId: user.active_game!}})
-  const {data: gameData} = useQuery<{games: [Game]}, GetGameByIdQueryVariables>(GET_GAME_BY_ID, {variables: {gameId: user.active_game!}})
-  const setCharacter = useMutation<User[], SetCharacterQueryVariables>(SET_CHARACTER)
+  const { data, error, loading } = useQuery<
+    { users: Array<User> },
+    GetActiveUsersQueryVariables
+  >(GET_ACTIVE_USERS, { variables: { gameId: user.active_game! } });
+  const { data: gameData } = useQuery<
+    { games: [Game] },
+    GetGameByIdQueryVariables
+  >(GET_GAME_BY_ID, { variables: { gameId: user.active_game! } });
+  const setCharacter = useMutation<User[], SetCharacterQueryVariables>(
+    SET_CHARACTER
+  );
   function handleCharacterSelect() {
     if (character) {
-      setCharacter({variables: {userId: user.id, character}})
-        .then(({data}: {data: {update_users: {returning: [User]}}}) => {
+      setCharacter({ variables: { userId: user.id, character } }).then(
+        ({ data }: { data: { update_users: { returning: [User] } } }) => {
           console.log(data, gameData);
-          if(data && data.update_users && data.update_users.returning && gameData && gameData.games && gameData.games.length) {
-            setUser({...user, character: data.update_users.returning[0].character});
-            client.clearStore().then(() => history.push(gamePath(gameData.games[0].title)));
+          if (
+            data &&
+            data.update_users &&
+            data.update_users.returning &&
+            gameData &&
+            gameData.games &&
+            gameData.games.length
+          ) {
+            setUser({
+              ...user,
+              character: data.update_users.returning[0].character,
+            });
+            client
+              .clearStore()
+              .then(() => history.push(gamePath(gameData.games[0].title)));
           }
-          dispatch(hideOverlay())
-        })
+          dispatch(hideOverlay());
+        }
+      );
     }
   }
-  
+
   return (
     <Overlay>
       <OverlayWidget
@@ -62,7 +91,7 @@ const SelectCharacterOverlay: FC<RouteComponentProps & WithApolloClient<{}>> = (
             disabled={loading || !!error || !character}
             onClick={handleCharacterSelect}
           >
-            {loading && <StyledProgress size="1em"/>}
+            {loading && <StyledProgress size="1em" />}
             Погнали!
           </Button>
         }
@@ -80,17 +109,24 @@ const SelectCharacterOverlay: FC<RouteComponentProps & WithApolloClient<{}>> = (
               <MenuItem value="" key="none">
                 <em>None</em>
               </MenuItem>
-                {
-                  !loading && data && characterList
-                    .filter(char => !data.users.map(user => user.character).includes(char))
-                    .map((char) => <MenuItem value={char} key={char}>{characterTitleMap[char]}</MenuItem>)
-                }
+              {!loading &&
+                data &&
+                characterList
+                  .filter(
+                    (char) =>
+                      !data.users.map((user) => user.character).includes(char)
+                  )
+                  .map((char) => (
+                    <MenuItem value={char} key={char}>
+                      {characterTitleMap[char]}
+                    </MenuItem>
+                  ))}
             </Select>
           </form>
         }
       />
     </Overlay>
-  )
-}
+  );
+};
 
 export default withRouter(withApollo(SelectCharacterOverlay));

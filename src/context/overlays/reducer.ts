@@ -1,6 +1,9 @@
-import { Action, OverlayActionType, OverlayContextState } from '../models/overlays';
+import { OverlayActionType, OverlayContextAction, OverlayContextState } from '../../models';
 
-export const reducer = (state: OverlayContextState, action: Action): OverlayContextState => {
+export const reducer = (
+  state: OverlayContextState,
+  action: OverlayContextAction
+): OverlayContextState => {
   switch (action.type) {
     case OverlayActionType.SHOW:
       return {
@@ -8,14 +11,14 @@ export const reducer = (state: OverlayContextState, action: Action): OverlayCont
         overlay: action.payload,
         props: action.props,
       };
-    
+
     case OverlayActionType.HIDE:
       return {
         ...state,
         overlay: undefined,
         props: undefined,
       };
-      
+
     default:
       return state;
   }

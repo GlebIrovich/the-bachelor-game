@@ -6,8 +6,8 @@ import styled from 'styled-components';
 
 import Overlay from '.';
 import { LOADING_ICON_SIZE } from '../../constants/styles';
-import { showOverlay } from '../../context/actions';
-import { useOverlayContext } from '../../context/OverlaysContext';
+import { showOverlay } from '../../context/overlays/actions';
+import { useOverlayContext } from '../../context/overlays/OverlaysContext';
 import { Game, OverlayKey } from '../../models';
 import {
   GET_GAME,
@@ -27,15 +27,26 @@ const StyledProgress = styled(CircularProgress)`
   margin-right: 0.5em !important;
 `;
 
-const JoinGameOverlay: FC<RouteComponentProps> = ({history}) => {
+const JoinGameOverlay: FC<RouteComponentProps> = ({ history }) => {
   const [, dispatch] = useOverlayContext();
-  const [values, titleChange] = useState({[InputField.TITLE]: ''})
-  const handleTitleChange = (field: InputField) => (event: ChangeEvent<HTMLInputElement>) => {
-    titleChange({...values, [InputField.TITLE]: event.currentTarget.value.toLocaleLowerCase()})
-  }
+  const [values, titleChange] = useState({ [InputField.TITLE]: '' });
+  const handleTitleChange = (field: InputField) => (
+    event: ChangeEvent<HTMLInputElement>
+  ) => {
+    titleChange({
+      ...values,
+      [InputField.TITLE]: event.currentTarget.value.toLocaleLowerCase(),
+    });
+  };
 
-  const {data, error, loading} = useQuery<{games: Game[]}, GetGameQueryVariables>(GET_GAME, {variables: {title: values[InputField.TITLE]}})
-  const setActiveGame = useMutation<SetActiveGameData, SetActiveGameQueryVariables>(SET_ACTIVE_GAME);
+  const { data, error, loading } = useQuery<
+    { games: Game[] },
+    GetGameQueryVariables
+  >(GET_GAME, { variables: { title: values[InputField.TITLE] } });
+  const setActiveGame = useMutation<
+    SetActiveGameData,
+    SetActiveGameQueryVariables
+  >(SET_ACTIVE_GAME);
 
   function isButtonDisabled() {
     if (data && data.games.length === 1) return false;
@@ -43,22 +54,26 @@ const JoinGameOverlay: FC<RouteComponentProps> = ({history}) => {
   }
   const user = getUser();
   function handleJoin() {
-    
     if (data && data.games.length === 1 && user) {
-      
-      setActiveGame({variables: {userId: user.id, gameId: data.games[0].id}})
-        .then(({data: mutationData}: {data: SetActiveGameData}) => {
-          if(mutationData
-              && mutationData.update_users
-              && mutationData.update_users.returning) {
-            setUser({...user, active_game: mutationData.update_users.returning[0].active_game});
+      setActiveGame({
+        variables: { userId: user.id, gameId: data.games[0].id },
+      }).then(({ data: mutationData }: { data: SetActiveGameData }) => {
+        if (
+          mutationData &&
+          mutationData.update_users &&
+          mutationData.update_users.returning
+        ) {
+          setUser({
+            ...user,
+            active_game: mutationData.update_users.returning[0].active_game,
+          });
 
-            dispatch(showOverlay(OverlayKey.SELECT_CHARACTER));
-          }
-        })
+          dispatch(showOverlay(OverlayKey.SELECT_CHARACTER));
+        }
+      });
     }
   }
-  
+
   return (
     <Overlay>
       <OverlayWidget
@@ -69,7 +84,7 @@ const JoinGameOverlay: FC<RouteComponentProps> = ({history}) => {
             color="primary"
             disabled={loading || !!error || isButtonDisabled()}
           >
-            {loading && <StyledProgress size={LOADING_ICON_SIZE}/>}
+            {loading && <StyledProgress size={LOADING_ICON_SIZE} />}
             Присоединиться
           </Button>
         }
@@ -87,7 +102,7 @@ const JoinGameOverlay: FC<RouteComponentProps> = ({history}) => {
         }
       />
     </Overlay>
-  )
-}
+  );
+};
 
-export default withRouter(JoinGameOverlay)
+export default withRouter(JoinGameOverlay);

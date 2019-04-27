@@ -9,7 +9,6 @@ import { EGG_SHELL } from '../../constants';
 import { Params } from '../../renderProps/UserAndGame';
 import BarPage from '../BarPage';
 import Characters from '../Characters';
-import { TabContainer } from './TabContainer';
 
 const StyledBottomNavigation = styled(BottomNavigation)`
   position: absolute;
@@ -26,14 +25,20 @@ interface Props extends Params {
 }
 
 class GameScreenWidget extends Component<Props, {}> {
-
   public componentDidMount() {
     this.props.subscribeToPlayers();
     this.props.subscribeToGame();
   }
 
   public render() {
-    const {swipeDisabled, tabIndex, subscribeToPlayers, disableTabSwipe, handleTabIndexChange, ...rest} = this.props;
+    const {
+      swipeDisabled,
+      tabIndex,
+      subscribeToPlayers,
+      disableTabSwipe,
+      handleTabIndexChange,
+      ...rest
+    } = this.props;
     const isCreator = rest.game.creator === rest.currentUserId;
     return (
       <React.Fragment>
@@ -42,9 +47,12 @@ class GameScreenWidget extends Component<Props, {}> {
           index={tabIndex}
           onChangeIndex={handleTabIndexChange}
         >
-          <BarPage disableTabSwipe={disableTabSwipe} game={rest.game} isCreator={rest.game.creator === rest.currentUserId}/>
-          <Characters {...rest} isCreator={isCreator}/>
-          <TabContainer tabCount={3}>Item Three</TabContainer>
+          <BarPage
+            disableTabSwipe={disableTabSwipe}
+            game={rest.game}
+            isCreator={rest.game.creator === rest.currentUserId}
+          />
+          <Characters {...rest} isCreator={isCreator} />
         </SwipeableViews>
         <StyledBottomNavigation
           value={tabIndex}
@@ -52,11 +60,11 @@ class GameScreenWidget extends Component<Props, {}> {
           showLabels
         >
           <BottomNavigationAction label="Карта" icon={<LocationOnIcon />} />
-          <BottomNavigationAction label="Герои" icon={<FaceIcon /> } />
+          <BottomNavigationAction label="Герои" icon={<FaceIcon />} />
         </StyledBottomNavigation>
       </React.Fragment>
-    )
+    );
   }
 }
 
-export default GameScreenWidget
+export default GameScreenWidget;

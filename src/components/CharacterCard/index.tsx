@@ -6,8 +6,8 @@ import { ISABELLINE } from '../../constants';
 import { SkillOverlayProps } from '../../containers/Overlay/SkillOverlay';
 import PlayerInfo from '../../containers/PlayerInfo';
 import SkillsContainer from '../../containers/SkillsContainer';
-import { showOverlay } from '../../context/actions';
-import { useOverlayContext } from '../../context/OverlaysContext';
+import { showOverlay } from '../../context/overlays/actions';
+import { useOverlayContext } from '../../context/overlays/OverlaysContext';
 import { ActiveUser, OverlayKey, SkillType, CharacterType } from '../../models';
 import ScoreWidget from '../ScoreWidget';
 
@@ -27,12 +27,12 @@ const characterAvatarMap = {
   [CharacterType.PALADIN]: Paladin,
   [CharacterType.THIEF]: Thief,
   [CharacterType.WIZARD]: Wizard,
-}
+};
 
 const svgIconStyle = {
   width: '3.6em',
   marginTop: '0.6em',
-}
+};
 
 const StyledAvatar = styled(Avatar)`
   background-color: transparent !important;
@@ -71,19 +71,32 @@ const CharacterCard: FC<Props> = ({ user, isCreator, isCharacterOwner }) => {
       skillStatus: user[skillType],
       isCreator,
       isCharacterOwner,
-    }
-    dispatch(showOverlay(OverlayKey.SKILL_DESCRIPTION, overlayProps))
+    };
+    dispatch(showOverlay(OverlayKey.SKILL_DESCRIPTION, overlayProps));
   }
 
   const CharacterAvatar = characterAvatarMap[user.character];
   return (
     <StyledCard>
-      <Grid container wrap="nowrap" spacing={16} alignContent="center" justify="space-between" alignItems="center">
+      <Grid
+        container
+        wrap="nowrap"
+        spacing={16}
+        alignContent="center"
+        justify="space-between"
+        alignItems="center"
+      >
         <Grid item>
           <StyledAvatar
-            onClick={() => dispatch(showOverlay(OverlayKey.CHARACTER_DESCRIPTION, { character: user.character }))}
+            onClick={() =>
+              dispatch(
+                showOverlay(OverlayKey.CHARACTER_DESCRIPTION, {
+                  character: user.character,
+                })
+              )
+            }
           >
-            <CharacterAvatar style={svgIconStyle}/>
+            <CharacterAvatar style={svgIconStyle} />
           </StyledAvatar>
         </Grid>
         <Grid item xs={8} zeroMinWidth>
@@ -91,11 +104,16 @@ const CharacterCard: FC<Props> = ({ user, isCreator, isCharacterOwner }) => {
           <SkillsContainer user={user} onSkillClick={onSkillClick} />
         </Grid>
         <Grid item xs={3}>
-          <ScoreWidget userId={user.id} score={user.score} isCreator={isCreator} isCharacterOwner={isCharacterOwner} />
+          <ScoreWidget
+            userId={user.id}
+            score={user.score}
+            isCreator={isCreator}
+            isCharacterOwner={isCharacterOwner}
+          />
         </Grid>
       </Grid>
     </StyledCard>
-  )
-}
+  );
+};
 
-export default CharacterCard
+export default CharacterCard;

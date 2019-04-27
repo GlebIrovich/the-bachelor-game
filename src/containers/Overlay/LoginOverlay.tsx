@@ -6,8 +6,8 @@ import styled from 'styled-components';
 
 import Overlay from '.';
 import { LOADING_ICON_SIZE } from '../../constants/styles';
-import { hideOverlay, showOverlay } from '../../context/actions';
-import { useOverlayContext } from '../../context/OverlaysContext';
+import { hideOverlay, showOverlay } from '../../context/overlays/actions';
+import { useOverlayContext } from '../../context/overlays/OverlaysContext';
 import { OverlayKey, User } from '../../models';
 import { LOGIN, LoginQueryVariables } from '../../queries';
 import { setUser } from '../../services';
@@ -23,43 +23,49 @@ const StyledProgress = styled(CircularProgress)`
   margin-right: 0.5em !important;
 `;
 
-const LoginOverlay: FC<WithApolloClient<{}> & RouteComponentProps> = ({client, history}) => {
+const LoginOverlay: FC<WithApolloClient<{}> & RouteComponentProps> = ({
+  client,
+  history,
+}) => {
   const [inputValues, changeValue] = useState({
     [InputField.EMAIL]: '',
     [InputField.PASSWORD]: '',
   });
   const [, dispatch] = useOverlayContext();
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState(false)
-
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
 
   function login() {
-    setLoading(true)
-    client.query<{users: User[]}, LoginQueryVariables>({
-      query: LOGIN,
-      variables: {
-        email: inputValues[InputField.EMAIL].toLocaleLowerCase(),
-        password: inputValues[InputField.PASSWORD],
-      } 
-    }).then(({data: {users}}) => {
-      setLoading(false);
-      if(users.length) {
-        setUser(users[0]);
-        dispatch(hideOverlay())
-      } else {
-        setError(true);
-      }
-    })
+    setLoading(true);
+    client
+      .query<{ users: User[] }, LoginQueryVariables>({
+        query: LOGIN,
+        variables: {
+          email: inputValues[InputField.EMAIL].toLocaleLowerCase(),
+          password: inputValues[InputField.PASSWORD],
+        },
+      })
+      .then(({ data: { users } }) => {
+        setLoading(false);
+        if (users.length) {
+          setUser(users[0]);
+          dispatch(hideOverlay());
+        } else {
+          setError(true);
+        }
+      });
   }
 
-  const handleChange = (inputName: InputField) => (event: ChangeEvent<HTMLInputElement>) => {
-    changeValue({ ...inputValues, [inputName]: event.currentTarget.value })
-  }
+  const handleChange = (inputName: InputField) => (
+    event: ChangeEvent<HTMLInputElement>
+  ) => {
+    changeValue({ ...inputValues, [inputName]: event.currentTarget.value });
+  };
 
   function signUp() {
     dispatch(showOverlay(OverlayKey.SIGN_UP));
   }
-  
+
   return (
     <Overlay>
       <OverlayWidget
@@ -68,7 +74,7 @@ const LoginOverlay: FC<WithApolloClient<{}> & RouteComponentProps> = ({client, h
         onCancel={() => history.push('/')}
         actions={
           <Button variant="contained" color="primary" fullWidth onClick={login}>
-            {loading && <StyledProgress size={LOADING_ICON_SIZE}/>}
+            {loading && <StyledProgress size={LOADING_ICON_SIZE} />}
             Войти
           </Button>
         }
@@ -101,7 +107,7 @@ const LoginOverlay: FC<WithApolloClient<{}> & RouteComponentProps> = ({client, h
         }
       />
     </Overlay>
-  )
-}
+  );
+};
 
-export default withRouter(withApollo(LoginOverlay))
+export default withRouter(withApollo(LoginOverlay));

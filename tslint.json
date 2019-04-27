@@ -14,7 +14,6 @@
         "import-sources-order": "case-insensitive"
       }
     ],
-    // Allow importing submodules such as `import { Menu } from '@blueprintjs/core';`
     "no-submodule-imports": false,
     // Dependencies need to be in package.json or start with `src`
     "no-implicit-dependencies": [true, ["dev", "src"]],
@@ -34,9 +33,9 @@
     "trailing-comma": [
       true,
       {
-          "multiline": "always",
-          "singleline": "never",
-          "esSpecCompliant": true
+        "multiline": "always",
+        "singleline": "never",
+        "esSpecCompliant": true
       }
     ]
   }

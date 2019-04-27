@@ -2,8 +2,8 @@ import { Button } from '@material-ui/core';
 import React from 'react';
 
 import Overlay from '.';
-import { hideOverlay } from '../../context/actions';
-import { useOverlayContext } from '../../context/OverlaysContext';
+import { hideOverlay } from '../../context/overlays/actions';
+import { useOverlayContext } from '../../context/overlays/OverlaysContext';
 import OverlayWidget from './OverlayWidget';
 
 const GameCompletedOverlay = () => {
@@ -26,7 +26,7 @@ const GameCompletedOverlay = () => {
         }
       />
     </Overlay>
-  )
-}
+  );
+};
 
-export default GameCompletedOverlay
+export default GameCompletedOverlay;
