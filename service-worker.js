@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "/the-bachelor-game/precache-manifest.8d32778bbb9d35188f4aa1d56194cd39.js"
+  "/the-bachelor-game/precache-manifest.9db0e0d714ba7e7631ab01b9a0be5c55.js"
 );
 
 workbox.clientsClaim();
