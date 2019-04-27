@@ -102,20 +102,22 @@ const BarStepsWidget: FC<Props> = ({ bars, isCreator, gameId, goToViewport }) =>
                 {address}
               </StyledBarAddress>
               <Grid container justify="space-between" direction="column">
-                <Button
-                  fullWidth
-                  variant="contained"
-                  color="primary"
-                  onClick={index === bars.length - 1 ? handleWin : () => updateBar(bars[index + 1].id)}
-                >
-                  {index === bars.length - 1 ? 'Все!' : 'Дальше!'}
-                </Button>
+                {isCreator && (
+                  <Button
+                    fullWidth
+                    variant="contained"
+                    color="primary"
+                    onClick={index === bars.length - 1 ? handleWin : () => updateBar(bars[index + 1].id)}
+                  >
+                    {index === bars.length - 1 ? 'Все!' : 'Дальше!'}
+                  </Button>
+                )}
                 {index > 0 && isCreator && (
                   <StyledButton
                     fullWidth
                     variant="outlined"
                     color="secondary"
-                    onClick={index > 0 && isCreator ? () => updateBar(bars[index - 1].id) : undefined}
+                    onClick={index > 0 ? () => updateBar(bars[index - 1].id) : undefined}
                   >
                     Назад
                   </StyledButton>
