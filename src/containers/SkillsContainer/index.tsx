@@ -4,17 +4,18 @@ import styled from 'styled-components';
 
 import SkillIcon from '../../components/SkillIcon';
 import { ActiveUser, SkillType } from '../../models';
-import artefactIcon from './icons/crown.svg';
-import defenceIcon from './icons/shield.svg';
-import attackIcon from './icons/swords.svg';
+
+import { ReactComponent as Attack } from './icons/swords.svg';
+import { ReactComponent as Defence } from './icons/shield.svg';
+import { ReactComponent as Artefact } from './icons/crown.svg';
 
 const StyledContainer = styled(Grid)`
   margin-top: 1em;
 `;
 
-const StyledSvgIcon = styled.img`
-  width: 1.1em !important;
-`;
+const svgIconStyle = {
+  width: '1.1em',
+}
 
 interface Props {
   user: ActiveUser;
@@ -25,13 +26,13 @@ const SkillsContainer: FC<Props> = ({ user, onSkillClick }) => {
   return (
     <StyledContainer container>
       <SkillIcon onClick={() => onSkillClick(SkillType.ATTACK)} skillStatus={user.attack}>
-        <StyledSvgIcon src={attackIcon} />
+        <Attack style={svgIconStyle}/>
       </SkillIcon>
       <SkillIcon onClick={() => onSkillClick(SkillType.DEFENCE)} skillStatus={user.defence}>
-        <StyledSvgIcon src={defenceIcon} />
+        <Defence style={svgIconStyle}/>
       </SkillIcon>
       <SkillIcon onClick={() => onSkillClick(SkillType.ARTEFACT)} skillStatus={user.artefact}>
-        <StyledSvgIcon src={artefactIcon} />
+        <Artefact style={svgIconStyle}/>
       </SkillIcon>
     </StyledContainer>
   )

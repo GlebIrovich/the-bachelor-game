@@ -21,6 +21,10 @@ const StyledSvgIcon = styled(SvgIcon)`
   cursor: pointer;
 `;
 
+const StyledSvgIconPlaceholder = styled(SvgIcon)`
+  color: transparent;
+`;
+
 interface Props {
   score: number;
   userId: UserId;
@@ -50,6 +54,7 @@ function ScoreWidget({ score, userId, isCharacterOwner, isCreator }: Props) {
   function decrement() {
     switchScoreDisplayMode(true);
     const updatedScore = localScore - 1;
+    if (updatedScore < 0) return;
     setScore(updatedScore);
     mutateScore({ variables: { userId, score: updatedScore } });
     if (timeout) {
@@ -67,7 +72,9 @@ function ScoreWidget({ score, userId, isCharacterOwner, isCreator }: Props) {
       <StyledScore>{useLocalScore ? localScore : score}</StyledScore>
       {
         (isCreator || isCharacterOwner)
-        && <StyledSvgIcon onClick={decrement}><DownIcon /></StyledSvgIcon>
+        && localScore > 0
+          ? <StyledSvgIcon onClick={decrement} type="button"><DownIcon /></StyledSvgIcon>
+          : <StyledSvgIconPlaceholder><DownIcon /></StyledSvgIconPlaceholder>
       }
     </StyledGridColumn>
   )

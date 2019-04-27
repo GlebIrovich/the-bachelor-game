@@ -27,6 +27,11 @@ const StyledAppBar = styled(AppBar)`
   background-color: ${EGG_SHELL} !important;
 `;
 
+const StyledGameName = styled(Typography)`
+  font-family: 'Ruslan Display', cursive !important;
+  font-size: 2.2em !important;
+`;
+
 interface Props {
   gameName: string;
 }
@@ -49,9 +54,9 @@ const Navbar: FC<RouteComponentProps & Props> = ({ history, gameName }) => {
   return (
     <StyledAppBar position="static" color="default">
       <StyledToolbar>
-        <Typography variant="h6" color="default">
+        <StyledGameName color="primary">
           {gameName}
-        </Typography>
+        </StyledGameName>
         <div>
           <IconButton
             buttonRef={elementRef}

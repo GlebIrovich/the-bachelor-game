@@ -16,7 +16,7 @@ interface Props {
 const PADDING = 24;
 
 const calculateContainerHeight = () => {
-  return useWindowSize().height - HEADER_HEIGHT_PX - FOOTER_HEIGHT_PX - PADDING;
+  return useWindowSize().height - HEADER_HEIGHT_PX - FOOTER_HEIGHT_PX - PADDING * 2;
 }
 
 interface StyledProps {
@@ -37,6 +37,7 @@ const Characters: FC<Props> = ({ users, game, isCreator, currentUserId }) => {
   useEffect(() => {
     window.addEventListener('resize', () => setHeight(calculateContainerHeight()))
   })
+  const user = users[0];
   return (
     <CharactersContainer height={containerHeight}>
       {users.map(user => <CharacterCard key={user.id} user={user} isCreator={isCreator} isCharacterOwner={user.id === currentUserId} />)}

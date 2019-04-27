@@ -6,7 +6,7 @@ import { hideOverlay } from '../../context/actions';
 import { useOverlayContext } from '../../context/OverlaysContext';
 
 const StyledOverlay = styled(Paper)`
-  width: 20em;
+  width: 100%;
   padding: 1em;
   margin: 0 auto;
 `;

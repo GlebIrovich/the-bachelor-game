@@ -4,11 +4,13 @@ import styled from 'styled-components';
 import { hideOverlay } from '../../context/actions';
 import { useOverlayContext } from '../../context/OverlaysContext';
 
+const overlayWidth = '20em';
+
 const StyledOverlay = styled.div`
   position: absolute;
   top: 20%;
-  width: 100%;
-  margin: 0 auto;
+  left: calc((100% - ${overlayWidth}) / 2);
+  width: ${overlayWidth};
 `;
 
 const Background = styled.div`
@@ -35,7 +37,7 @@ const Overlay: FC = ({children}) => {
 
   return (
     <React.Fragment>
-      <Background/>
+      <Background onClick={() => dispatch(hideOverlay())}/>
       <StyledOverlay>
         {children}
       </StyledOverlay>

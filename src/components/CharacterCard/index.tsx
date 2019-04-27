@@ -8,9 +8,31 @@ import PlayerInfo from '../../containers/PlayerInfo';
 import SkillsContainer from '../../containers/SkillsContainer';
 import { showOverlay } from '../../context/actions';
 import { useOverlayContext } from '../../context/OverlaysContext';
-import { ActiveUser, OverlayKey, SkillType } from '../../models';
+import { ActiveUser, OverlayKey, SkillType, CharacterType } from '../../models';
 import ScoreWidget from '../ScoreWidget';
-import { ReactComponent as CharAvatar } from './avatars/dummy.svg';
+
+import { ReactComponent as Barbarian } from './avatars/barbarian.svg';
+import { ReactComponent as Bard } from './avatars/bard.svg';
+import { ReactComponent as Gunslinger } from './avatars/gunslinger.svg';
+import { ReactComponent as Monk } from './avatars/monk.svg';
+import { ReactComponent as Paladin } from './avatars/paladin.svg';
+import { ReactComponent as Thief } from './avatars/thief.svg';
+import { ReactComponent as Wizard } from './avatars/wizard.svg';
+
+const characterAvatarMap = {
+  [CharacterType.BARBARIAN]: Barbarian,
+  [CharacterType.BARD]: Bard,
+  [CharacterType.GUNSLINGER]: Gunslinger,
+  [CharacterType.MONK]: Monk,
+  [CharacterType.PALADIN]: Paladin,
+  [CharacterType.THIEF]: Thief,
+  [CharacterType.WIZARD]: Wizard,
+}
+
+const svgIconStyle = {
+  width: '3.6em',
+  marginTop: '0.6em',
+}
 
 const StyledAvatar = styled(Avatar)`
   background-color: transparent !important;
@@ -52,6 +74,8 @@ const CharacterCard: FC<Props> = ({ user, isCreator, isCharacterOwner }) => {
     }
     dispatch(showOverlay(OverlayKey.SKILL_DESCRIPTION, overlayProps))
   }
+
+  const CharacterAvatar = characterAvatarMap[user.character];
   return (
     <StyledCard>
       <Grid container wrap="nowrap" spacing={16} alignContent="center" justify="space-between" alignItems="center">
@@ -59,7 +83,7 @@ const CharacterCard: FC<Props> = ({ user, isCreator, isCharacterOwner }) => {
           <StyledAvatar
             onClick={() => dispatch(showOverlay(OverlayKey.CHARACTER_DESCRIPTION, { character: user.character }))}
           >
-            <CharAvatar />
+            <CharacterAvatar style={svgIconStyle}/>
           </StyledAvatar>
         </Grid>
         <Grid item xs={8} zeroMinWidth>

@@ -20,5 +20,6 @@ export const theme = createMuiTheme({
   },
   typography: {
     fontFamily: 'Underdog',
+    useNextVariants: true,
   },
 });
