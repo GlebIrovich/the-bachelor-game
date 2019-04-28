@@ -19,9 +19,7 @@ interface Props {
 const PADDING = 24;
 
 const calculateContainerHeight = () => {
-  return (
-    useWindowSize().height - HEADER_HEIGHT_PX - FOOTER_HEIGHT_PX - PADDING * 2
-  );
+  return useWindowSize().height - HEADER_HEIGHT_PX - FOOTER_HEIGHT_PX - PADDING * 2;
 };
 
 interface StyledProps {
@@ -38,14 +36,10 @@ const CharactersContainer = styled.div`
 `;
 
 const Characters: FC<Props> = ({ users, game, isCreator, currentUserId }) => {
-  const [containerHeight, setHeight] = React.useState(
-    calculateContainerHeight()
-  );
+  const [containerHeight, setHeight] = React.useState(calculateContainerHeight());
   const [{ effect }] = useEffectsContext();
   useEffect(() => {
-    window.addEventListener('resize', () =>
-      setHeight(calculateContainerHeight())
-    );
+    window.addEventListener('resize', () => setHeight(calculateContainerHeight()));
   });
   return (
     <React.Fragment>
@@ -54,6 +48,7 @@ const Characters: FC<Props> = ({ users, game, isCreator, currentUserId }) => {
         {users.map((user) => (
           <CharacterCard
             key={user.id}
+            gameId={game.id}
             user={user}
             isCreator={isCreator}
             isCharacterOwner={user.id === currentUserId}

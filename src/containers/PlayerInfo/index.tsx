@@ -4,13 +4,13 @@ import styled from 'styled-components';
 
 import { characterTitleMap, CharacterType } from '../../models';
 
-const StyledContainer = styled(Grid)`
-`;
+const StyledContainer = styled(Grid)``;
 
 const StyledUsername = styled(Typography)`
   width: 7em;
   font-size: 1.2em !important;
   font-weight: 600 !important;
+  font-family: 'Ruslan Display', cursive !important;
 `;
 
 interface Props {
@@ -18,7 +18,7 @@ interface Props {
   character: CharacterType;
 }
 
-const PlayerInfo: FC<Props> = ({username, character}) => {
+const PlayerInfo: FC<Props> = ({ username, character }) => {
   return (
     <React.Fragment>
       <StyledContainer container>
@@ -32,7 +32,7 @@ const PlayerInfo: FC<Props> = ({username, character}) => {
         </Grid>
       </StyledContainer>
     </React.Fragment>
-  )
-}
+  );
+};
 
-export default PlayerInfo
+export default PlayerInfo;

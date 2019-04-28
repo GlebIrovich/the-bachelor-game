@@ -8,9 +8,8 @@ import PlayerInfo from '../../containers/PlayerInfo';
 import SkillsContainer from '../../containers/SkillsContainer';
 import { showOverlay } from '../../context/overlays/actions';
 import { useOverlayContext } from '../../context/overlays/OverlaysContext';
-import { ActiveUser, OverlayKey, SkillType, CharacterType } from '../../models';
+import { ActiveUser, CharacterType, GameId, OverlayKey, SkillType } from '../../models';
 import ScoreWidget from '../ScoreWidget';
-
 import { ReactComponent as Barbarian } from './avatars/barbarian.svg';
 import { ReactComponent as Bard } from './avatars/bard.svg';
 import { ReactComponent as Gunslinger } from './avatars/gunslinger.svg';
@@ -59,9 +58,10 @@ interface Props {
   user: ActiveUser;
   isCreator: boolean;
   isCharacterOwner: boolean;
+  gameId: GameId;
 }
 
-const CharacterCard: FC<Props> = ({ user, isCreator, isCharacterOwner }) => {
+const CharacterCard: FC<Props> = ({ user, isCreator, isCharacterOwner, gameId }) => {
   const [, dispatch] = useOverlayContext();
   function onSkillClick(skillType: SkillType) {
     const overlayProps: SkillOverlayProps = {
@@ -78,20 +78,16 @@ const CharacterCard: FC<Props> = ({ user, isCreator, isCharacterOwner }) => {
   const CharacterAvatar = characterAvatarMap[user.character];
   return (
     <StyledCard>
-      <Grid
-        container
-        wrap="nowrap"
-        spacing={16}
-        alignContent="center"
-        justify="space-between"
-        alignItems="center"
-      >
+      <Grid container wrap="nowrap" spacing={16} alignContent="center" justify="space-between" alignItems="center">
         <Grid item>
           <StyledAvatar
             onClick={() =>
               dispatch(
                 showOverlay(OverlayKey.CHARACTER_DESCRIPTION, {
                   character: user.character,
+                  userId: user.id,
+                  isCreator,
+                  gameId,
                 })
               )
             }
@@ -104,12 +100,7 @@ const CharacterCard: FC<Props> = ({ user, isCreator, isCharacterOwner }) => {
           <SkillsContainer user={user} onSkillClick={onSkillClick} />
         </Grid>
         <Grid item xs={3}>
-          <ScoreWidget
-            userId={user.id}
-            score={user.score}
-            isCreator={isCreator}
-            isCharacterOwner={isCharacterOwner}
-          />
+          <ScoreWidget userId={user.id} score={user.score} isCreator={isCreator} isCharacterOwner={isCharacterOwner} />
         </Grid>
       </Grid>
     </StyledCard>
