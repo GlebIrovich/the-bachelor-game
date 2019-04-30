@@ -5,7 +5,7 @@ import { Mutation } from 'react-apollo';
 import Overlay from '.';
 import { hideOverlay, useOverlayContext } from '../../context';
 import { showEffect, useEffectsContext } from '../../context/specialEffects';
-import { CharacterType, skillDescriptionMap, SkillStatus, SkillType, skillTypeMap, UserId } from '../../models';
+import { CharacterType, skillDescriptionMap, SkillStatus, SkillType, UserId } from '../../models';
 import { EffectType } from '../../models/effects';
 import { UPDATE_SKILL_STATUS, UpdateSkillStatusMutationVariables } from '../../queries';
 import OverlayWidget from './OverlayWidget';
@@ -19,10 +19,7 @@ export interface SkillOverlayProps {
   isCharacterOwner: boolean;
 }
 
-class UpdateSkillStatusMutation extends Mutation<
-  any,
-  UpdateSkillStatusMutationVariables
-> {}
+class UpdateSkillStatusMutation extends Mutation<any, UpdateSkillStatusMutationVariables> {}
 
 const SkillOverlay: FC<SkillOverlayProps> = ({
   character,
@@ -47,7 +44,7 @@ const SkillOverlay: FC<SkillOverlayProps> = ({
   return (
     <Overlay>
       <OverlayWidget
-        title={skillTypeMap[skillType]}
+        title={skillDescriptionMap[character][skillType].title}
         actions={
           <UpdateSkillStatusMutation mutation={UPDATE_SKILL_STATUS(skillType)}>
             {(updateSkillStatus) => (
@@ -90,9 +87,7 @@ const SkillOverlay: FC<SkillOverlayProps> = ({
             )}
           </UpdateSkillStatusMutation>
         }
-        content={
-          <Typography>{skillDescriptionMap[character][skillType]}</Typography>
-        }
+        content={<Typography>{skillDescriptionMap[character][skillType].text}</Typography>}
       />
     </Overlay>
   );

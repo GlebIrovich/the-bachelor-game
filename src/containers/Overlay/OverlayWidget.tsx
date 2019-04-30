@@ -13,6 +13,7 @@ const StyledOverlay = styled(Paper)`
 const Title = styled(Typography)`
   font-size: 1.5em !important;
   margin-bottom: 0.5em !important;
+  font-family: 'Ruslan Display', cursive !important;
 `;
 
 const Message = styled(Typography)`
@@ -25,6 +26,10 @@ const StyledActionContainer = styled.div`
   > button {
     margin-top: 0.8em;
   }
+`;
+
+const StyledContentContainer = styled(Grid)`
+  text-align: justify !important;
 `;
 
 const StyledCancelButton = styled(Button)`
@@ -62,21 +67,16 @@ const OverlayWidget: FC<Props> = ({
           <Title>{title}</Title>
           {message && <Message>{message}</Message>}
         </Grid>
-        <Grid item xs={12}>
+        <StyledContentContainer item xs={12}>
           {content}
-        </Grid>
+        </StyledContentContainer>
       </Grid>
       <Grid container justify="flex-end">
         <StyledActionContainer>
           {actions}
           {secondaryActions}
           {!hideCancelAction && (
-            <StyledCancelButton
-              color="secondary"
-              variant="outlined"
-              onClick={handleCancel}
-              fullWidth
-            >
+            <StyledCancelButton color="secondary" variant="outlined" onClick={handleCancel} fullWidth>
               Отмена
             </StyledCancelButton>
           )}
