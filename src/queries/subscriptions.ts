@@ -12,15 +12,15 @@ export interface SubscribeToPlayersData {
 
 export const PLAYERS_SUBSCRIPTION = gql`
   subscription onPlayersChanged($gameId: uuid!) {
-    players(where: {game_id: {_eq: $gameId}}, order_by: {score: desc}) {
+    players(where: { game_id: { _eq: $gameId } }, order_by: { score: desc }) {
       user_id
       artefact
       attack
       defence
       game_id
       score
+      character
       user {
-        character
         email
         id
         username
@@ -31,9 +31,9 @@ export const PLAYERS_SUBSCRIPTION = gql`
 `;
 
 export const GAME_SUBSCRIPTION = gql`
-  subscription onGameChange($gameId: uuid!){
-    games(where: {id: {_eq: $gameId}}) {
-      bars(order_by: {order: asc}) {
+  subscription onGameChange($gameId: uuid!) {
+    games(where: { id: { _eq: $gameId } }) {
+      bars(order_by: { order: asc }) {
         address
         id
         latitude

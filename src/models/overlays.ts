@@ -3,7 +3,6 @@ import { ActionProps, GenericAction } from './common';
 export enum OverlayKey {
   GAME_COMPLETED = 'gameCompleted',
   JOIN_GAME = 'gameJoin',
-  SELECT_CHARACTER = 'selectCharacter',
   LOGIN = 'login',
   SIGN_UP = 'signUp',
   CHARACTER_DESCRIPTION = 'characterDescription',
@@ -20,7 +19,4 @@ export enum OverlayActionType {
   HIDE = 'hide',
 }
 
-export type OverlayContextAction = GenericAction<
-  OverlayActionType,
-  OverlayKey | undefined
->;
+export type OverlayContextAction = GenericAction<OverlayActionType, OverlayKey | undefined>;

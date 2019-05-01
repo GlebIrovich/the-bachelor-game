@@ -55,13 +55,11 @@ const Main: FC<RouteComponentProps & Props> = ({ history, loginRequired }) => {
   const [, dispatch] = useOverlayContext();
   const user = getUser();
 
-  useEffect(() =>
-    loginRequired ? dispatch(showOverlay(OverlayKey.LOGIN)) : undefined
-  );
+  useEffect(() => (loginRequired ? dispatch(showOverlay(OverlayKey.LOGIN)) : undefined));
 
   function handleJoinGameClick(games?: [Game]) {
     if (user) {
-      if (user.character && games && games.length) {
+      if (user.active_game && games && games.length && user.active_game === games[0].id) {
         history.push(gamePath(games[0].title));
       } else {
         dispatch(showOverlay(OverlayKey.JOIN_GAME));
@@ -76,10 +74,7 @@ const Main: FC<RouteComponentProps & Props> = ({ history, loginRequired }) => {
       <StyledMenuCard container direction="column" justify="space-between">
         <StyledTitle>Привет Алко Герой</StyledTitle>
         <StyledButtonContainer item>
-          <GameQuery
-            query={GET_GAME_BY_ID}
-            variables={{ gameId: user && user.active_game }}
-          >
+          <GameQuery query={GET_GAME_BY_ID} variables={{ gameId: user && user.active_game }}>
             {({ data, loading }) => (
               <React.Fragment>
                 <StyledButton

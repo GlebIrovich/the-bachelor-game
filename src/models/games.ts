@@ -1,3 +1,4 @@
+import { CharacterType } from './characters';
 import { UserId } from './users';
 
 export type GameId = string;
@@ -5,7 +6,7 @@ export type GameId = string;
 export interface Game {
   id: GameId;
   title: string;
-  modified: number; 
+  modified: number;
   creator: UserId;
   bars: Level[];
 }
@@ -28,6 +29,7 @@ export interface Player {
   attack: SkillStatus;
   defence: SkillStatus;
   artefact: SkillStatus;
+  character: CharacterType;
 }
 
 export enum LevelStatus {
@@ -49,4 +51,3 @@ export interface GameData {
   levels: Level[];
   activeLevel: string; // Level Id;
 }
-

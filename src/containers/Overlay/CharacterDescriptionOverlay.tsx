@@ -36,7 +36,7 @@ const CharacterDescriptionOverlay: FC<Props> = ({ character, userId, gameId, isC
     if (event) {
       mutateCharacter({ variables: { userId, character: event.target.value } }).then(({ data }) => {
         if (data) {
-          setCharacter((data as MutateCharacterData).update_users.returning[0].character);
+          setCharacter((data as MutateCharacterData).update_players.returning[0].character);
           resetSkills({ variables: { userId, gameId } });
         }
       });

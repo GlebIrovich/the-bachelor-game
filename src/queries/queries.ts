@@ -4,28 +4,27 @@ import { OperationVariables } from 'react-apollo';
 import { Game, GameId, Player, User, UserId } from '../models';
 
 export interface GetUserByEmailQueryVariables extends OperationVariables {
-  email: string,
+  email: string;
 }
 
 export const GET_USER_BY_EMAIL = gql`
-  query getUserByEmail($email: String!){
-    users(where: {email: {_eq: $email}}) {
+  query getUserByEmail($email: String!) {
+    users(where: { email: { _eq: $email } }) {
       id
     }
   }
 `;
 
 export interface LoginQueryVariables extends OperationVariables {
-  email: string,
+  email: string;
   password: string;
 }
 
 export const LOGIN = gql`
-  query loginUser($email: String!, $password: String!){
-    users(where: {_and: {email: {_eq: $email}, password: {_eq: $password}}}) {
+  query loginUser($email: String!, $password: String!) {
+    users(where: { _and: { email: { _eq: $email }, password: { _eq: $password } } }) {
       username
       id
-      character
       email
       active_game
     }
@@ -37,8 +36,8 @@ export interface GetGameQueryVariables extends OperationVariables {
 }
 
 export const GET_GAME = gql`
-  query getGame($title: String!){
-    games(where: {title: {_eq: $title}}) {
+  query getGame($title: String!) {
+    games(where: { title: { _eq: $title } }) {
       creator
       id
       modified
@@ -57,9 +56,9 @@ export interface GetGameByIdData {
 }
 
 export const GET_GAME_BY_ID = gql`
-  query getGameById($gameId: uuid!){
-    games(where: {id: {_eq: $gameId}}) {
-      bars(order_by: {order: asc}) {
+  query getGameById($gameId: uuid!) {
+    games(where: { id: { _eq: $gameId } }) {
+      bars(order_by: { order: asc }) {
         address
         id
         latitude
@@ -76,16 +75,14 @@ export const GET_GAME_BY_ID = gql`
   }
 `;
 
-
 export interface GetUserQueryVariables extends OperationVariables {
-  userId: UserId,
+  userId: UserId;
 }
 
 export const GET_USER = gql`
-  query getUser($userId: uuid!){
-    users(where: {id: {_eq: $userId}}) {
+  query getUser($userId: uuid!) {
+    users(where: { id: { _eq: $userId } }) {
       active_game
-      character
       email
       id
       modified
@@ -107,16 +104,16 @@ export interface GetActiveUsersData {
 }
 
 export const GET_ACTIVE_USERS = gql`
-  query getUser($gameId: uuid!){
-    players(where: {game_id: {_eq: $gameId}}, order_by: {score: desc}) {
+  query getUser($gameId: uuid!) {
+    players(where: { game_id: { _eq: $gameId } }, order_by: { score: desc }) {
       user_id
       artefact
       attack
       defence
       game_id
       score
+      character
       user {
-        character
         email
         id
         username
@@ -125,4 +122,3 @@ export const GET_ACTIVE_USERS = gql`
     }
   }
 `;
-

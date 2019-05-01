@@ -9,13 +9,11 @@ import CharacterDescriptionOverlay from './containers/Overlay/CharacterDescripti
 import GameCompletedOverlay from './containers/Overlay/GameCompletedOverlay';
 import JoinGameOverlay from './containers/Overlay/JoinGameOverlay';
 import LoginOverlay from './containers/Overlay/LoginOverlay';
-import SelectCharacterOverlay from './containers/Overlay/SelectCharacterOverlay';
 import SignUpOverlay from './containers/Overlay/SignUpOverlay';
 import SkillOverlay from './containers/Overlay/SkillOverlay';
 import Routes from './containers/Routes';
-
-import { OverlayKey } from './models/overlays';
 import { useOverlayContext } from './context';
+import { OverlayKey } from './models/overlays';
 
 interface OverlayMapping {
   [overlayKey: string]: ComponentType<any>;
@@ -24,7 +22,6 @@ interface OverlayMapping {
 const overlayMap: OverlayMapping = {
   [OverlayKey.GAME_COMPLETED]: GameCompletedOverlay,
   [OverlayKey.JOIN_GAME]: JoinGameOverlay,
-  [OverlayKey.SELECT_CHARACTER]: SelectCharacterOverlay,
   [OverlayKey.LOGIN]: LoginOverlay,
   [OverlayKey.SIGN_UP]: SignUpOverlay,
   [OverlayKey.CHARACTER_DESCRIPTION]: CharacterDescriptionOverlay,

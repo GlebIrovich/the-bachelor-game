@@ -1,11 +1,12 @@
 import gql from 'graphql-tag';
 import { OperationVariables } from 'react-apollo';
 
-import { GameData, GameId, Player, SkillStatus, SkillType, User, UserId } from '../models';
+import { CharacterType, GameId, Player, SkillStatus, SkillType, User, UserId } from '../models';
 
 export interface SetActiveGameQueryVariables extends OperationVariables {
   userId: string;
   gameId: string;
+  character: CharacterType;
 }
 
 export interface SetActiveGameData {
@@ -18,18 +19,17 @@ export interface SetActiveGameData {
 }
 
 export const SET_ACTIVE_GAME = gql`
-  mutation setActiveGame($userId: uuid!, $gameId: uuid!) {
+  mutation setActiveGame($userId: uuid!, $gameId: uuid!, $character: String!) {
     update_users(where: { id: { _eq: $userId } }, _set: { active_game: $gameId }) {
       returning {
         active_game
-        character
         email
         id
         username
       }
     }
     insert_players(
-      objects: { user_id: $userId, game_id: $gameId }
+      objects: { user_id: $userId, game_id: $gameId, character: $character }
       on_conflict: { update_columns: [defence, attack, artefact, score], constraint: players_pkey }
     ) {
       returning {
@@ -38,14 +38,15 @@ export const SET_ACTIVE_GAME = gql`
         defence
         attack
         artefact
+        character
       }
     }
   }
 `;
 
 export interface MutateCharacterData {
-  update_users: {
-    returning: [Pick<User, 'character'>];
+  update_players: {
+    returning: [Player];
   };
 }
 
@@ -56,8 +57,9 @@ export interface SetCharacterMutationVariables extends OperationVariables {
 
 export const SET_CHARACTER = gql`
   mutation setCharacter($userId: uuid!, $character: String!) {
-    update_users(where: { id: { _eq: $userId } }, _set: { character: $character }) {
+    update_players(where: { user_id: { _eq: $userId } }, _set: { character: $character }) {
       returning {
+        user_id
         character
       }
     }
@@ -76,25 +78,6 @@ export const RESET_PLAYER_SKILLS = gql`
       _set: { attack: "ready", defence: "ready", artefact: "ready" }
     ) {
       affected_rows
-    }
-  }
-`;
-
-export interface UpdateGameDataMutationVariables extends OperationVariables {
-  gameId: GameId;
-  gameData: GameData;
-}
-
-export const UPDATE_GAME_DATA = gql`
-  mutation updateGameData($gameId: uuid!, $gameData: json!) {
-    update_games(where: { id: { _eq: $gameId } }, _set: { game_data: $gameData }) {
-      returning {
-        creator
-        game_data
-        id
-        modified
-        title
-      }
     }
   }
 `;
