@@ -42,7 +42,6 @@ export const GET_GAME = gql`
       id
       modified
       title
-      game_data
     }
   }
 `;
