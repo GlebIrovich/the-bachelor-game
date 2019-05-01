@@ -4,7 +4,7 @@ self.__precacheManifest = [
     "url": "/the-bachelor-game/static/media/barbarian.a3789dcf.svg"
   },
   {
-    "revision": "2d572eccfe7833476eb8",
+    "revision": "d40d2dbd8e556d7714ae",
     "url": "/the-bachelor-game/static/css/main.d02028a4.chunk.css"
   },
   {
@@ -32,8 +32,8 @@ self.__precacheManifest = [
     "url": "/the-bachelor-game/static/media/crown.825384a6.svg"
   },
   {
-    "revision": "2d572eccfe7833476eb8",
-    "url": "/the-bachelor-game/static/js/main.44e466f7.chunk.js"
+    "revision": "d40d2dbd8e556d7714ae",
+    "url": "/the-bachelor-game/static/js/main.13dca42f.chunk.js"
   },
   {
     "revision": "99034787ff7ae9e0441cd7b2b50c57d9",
@@ -60,7 +60,7 @@ self.__precacheManifest = [
     "url": "/the-bachelor-game/static/media/wizard.4f0e54e1.svg"
   },
   {
-    "revision": "da14acd1615fa395717c9c9e17ae3c8c",
+    "revision": "7375205a7d1decde939f553fc063c967",
     "url": "/the-bachelor-game/index.html"
   }
 ];
